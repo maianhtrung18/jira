@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* form */
+.form_Container {
+  align-items: center;
+}
+.form_Left {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+.form_Left img {
+  width: 100%;
+  height: 70%;
+}
+
+/* register */
+.register {
+  text-align: center;
+}
