@@ -12,3 +12,14 @@ export const signUp = (data) => {
         data: data,
     });
 }
+
+export const signIn = (data) => {
+    return axios({
+        method: 'post',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Users/signin`,
+        headers: {
+            TokenCybersoft: studentToken
+        },
+        data: data,
+    });
+}

@@ -6,6 +6,7 @@ import '../src/css/style.css'
 import FormTemplate from './templates/FormTemplate';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
+import Header from './pages/components/Header';
 
 export const history = createBrowserHistory()
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Switch>
         <FormTemplate path='/login' component={Login}/>
         <FormTemplate path='/register' component={Register}/>
+        <Route exact path={'/home'} component={Header}/>
       </Switch>
     </Router>
   );
