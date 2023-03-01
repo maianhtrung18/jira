@@ -23,3 +23,13 @@ export const signIn = (data) => {
         data: data,
     });
 }
+
+export const getAllProject = () => {
+    return axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/getAllProject`,
+        headers: {
+            TokenCybersoft: studentToken
+        },
+    });
+}

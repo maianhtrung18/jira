@@ -22,3 +22,17 @@
 .register {
   text-align: center;
 }
+
+/* project managerment */
+.projectManager_Container {
+  padding: 30px;
+}
+
+.projectManager_ContainerTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchInput {
+  margin-top: 20px;
+}

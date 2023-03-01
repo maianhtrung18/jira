@@ -10,8 +10,7 @@ export default function FormTemplate(props) {
                 </div>
                 <div className='col-12 col-md-6 form_Right'>
                     <props.component {...propsRoute.component} />
-                </div>
-                
+                </div>    
             </div>
         }}>
         </Route>

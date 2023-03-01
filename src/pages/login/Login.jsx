@@ -19,17 +19,13 @@ const formik = useFormik({
             passWord: Yup.string().required('Password không được để trống'),
         }),
         onSubmit: values => {
-            // console.log(values)
             let register = signIn(values)
             register.then((result) => {
-                // console.log(result.data)
                 let action = loginAction(result.data.content)
                 dispatch(action)
-                // alert(result.data.message)
-                // history.push('/login')
-                // history.go(0)
+                history.push('/home')
+                history.go(0)
             }).catch((error) => {
-                // console.log(error)
                 alert(error.response.data.message)
             })
         },
