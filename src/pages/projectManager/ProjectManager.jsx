@@ -82,20 +82,55 @@ export default function ProjectManager() {
             dataIndex: 'member',
             render: (_, { tags: members }) => (
                 <>
-                    {members.map((member) => {
-                        // let color = member.length > 5 ? 'geekblue' : 'green';
-                        // if (member === 'loser') {
-                            // color = 'volcano';
-                        // }
-                        // console.log(member)
-                        return (
-                            <Tag key={member.userId}>
-                                {member.name.charAt(0).toUpperCase()}
-                                {/* {member.toUpperCase()} */}
-                            </Tag>
-                        );
-                    })}
+                    {members.length > 3 ?
+                        <>
+                                <Tag key={members[0].userId}>
+                                    {members[0].name.charAt(0).toUpperCase()}
+                                    {/* {member.toUpperCase()} */}
+                                </Tag>
+                                <Tag key={members[1].userId}>
+                                    {members[1].name.charAt(0).toUpperCase()}
+                                    {/* {member.toUpperCase()} */}
+                                </Tag>
+                                 <Tag key={members[2].userId}>
+                                    {`+${members.length-2}`}
+                                    {/* {member.toUpperCase()} */}
+                                </Tag>                
+                        </> 
+                        :
+                        <>
+                            {members.map((member) => {
+                                // let color = member.length > 5 ? 'geekblue' : 'green';
+                                // if (member === 'loser') {
+                                // color = 'volcano';
+                                // }
+                                // console.log(member)
+                                return (
+                                    <Tag key={member.userId}>
+                                        {member.name.charAt(0).toUpperCase()}
+                                        {/* {member.toUpperCase()} */}
+                                    </Tag>
+                                );
+                            })}
+                        </>
+
+                    }
                 </>
+                // <> 
+                //     {members.map((member) => {
+                //         // let color = member.length > 5 ? 'geekblue' : 'green';
+                //         // if (member === 'loser') {
+                //             // color = 'volcano';
+                //         // }
+                //         // console.log(member)
+                //         return (
+                //             <Tag key={member.userId}>
+                //                 {member.name.charAt(0).toUpperCase()}
+                //                 {/* {member.toUpperCase()} */}
+                //             </Tag>
+                //         );
+                //     })}
+                // </>
             ),
         },
         {
@@ -109,27 +144,28 @@ export default function ProjectManager() {
             ),
         },
     ];
-    const data = [
-        {
-            key: '1',
-            id: '123',
-            name: 'John Brown',
-            age: 32,
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            tags: ['cool', 'teacher'],
-        },
-    ];
+
+    // const data = [
+    //     {
+    //         key: '1',
+    //         id: '123',
+    //         name: 'John Brown',
+    //         age: 32,
+    //         tags: ['nice', 'developer'],
+    //     },
+    //     {
+    //         key: '2',
+    //         name: 'Jim Green',
+    //         age: 42,
+    //         tags: ['loser'],
+    //     },
+    //     {
+    //         key: '3',
+    //         name: 'Joe Black',
+    //         age: 32,
+    //         tags: ['cool', 'teacher'],
+    //     },
+    // ];
 
     return (
         <div className='projectManager'>
