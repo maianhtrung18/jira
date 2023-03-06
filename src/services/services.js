@@ -33,3 +33,46 @@ export const getAllProject = () => {
         },
     });
 }
+
+export const deleteProject = (id, token) => {
+    return axios({
+        method: 'delete',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/deleteProject`,
+        params:{
+            projectId: id
+        },
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
+export const getProjectInfo = (id, token) => {
+    return axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/getProjectDetail`,
+        params:{
+            id: id
+        },
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
+export const updateProject = (id, token, data) => {
+    return axios({
+        method: 'put',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/updateProject`,
+        params:{
+            projectId: id
+        },
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        },
+        data: data
+    });
+}

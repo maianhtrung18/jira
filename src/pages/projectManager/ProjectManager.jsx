@@ -1,14 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AudioOutlined } from '@ant-design/icons';
+// import { AudioOutlined } from '@ant-design/icons';
 import { Input, Space, Table, Tag } from 'antd';
-import { getAllProject } from '../../services/services';
+import { deleteProject, getAllProject, getProjectInfo, updateProject } from '../../services/services';
+import { TOKEN } from '../../ulti/setting';
+import JoditEditor from 'jodit-react';
+import { number } from 'yup';
+// import { useFormik } from 'formik';
 const { Search } = Input;
+
 
 // import {  } from 'antd';
 
 export default function ProjectManager() {
 
+    // ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
+    // let projectIdEdit = useRef()
+
+
+    let nullInfo = {
+        "lstTask": [
+        ],
+        "members": [],
+        "creator": {
+            "id": number,
+            "name": ""
+        },
+        "id": 'Auto generate',
+        "projectName": "",
+        "description": "",
+        "projectCategory": {
+            "id": number,
+            "name": ""
+        },
+        "alias": "",
+        "create": true
+    }
+
     let projectData = useRef()
+    let [projectIdEdit, setProjectIdEdit] = useState(nullInfo)
     useEffect(() => {
         // console.log('run after render')
         getAllProjectList()
@@ -16,25 +45,11 @@ export default function ProjectManager() {
 
     let [projectList, setProjectList] = useState([
     ])
-
-    //  {
-    //             key: '1',
-    //             id: '123',
-    //             name: 'John Brown',
-    //             age: 32,
-    //             address: 'New York No. 1 Lake Park',
-    //             tags: ['nice', 'developer'],
-    //         },
-
     let getAllProjectList = () => {
         let projectArr = []
-        // let project
         let getProjectList = getAllProject()
         getProjectList.then((result) => {
-            console.log(result.data.content)
             projectData.current = result.data.content
-            // let arr = result.data.content
-            // console.log(arr)
             projectArr = result.data.content.map((project, index) => {
                 return {
                     key: `${index}`,
@@ -45,9 +60,7 @@ export default function ProjectManager() {
                     tags: project.members
                 }
             })
-            console.log(projectArr)
             setProjectList(projectArr)
-
         })
     }
 
@@ -84,19 +97,19 @@ export default function ProjectManager() {
                 <>
                     {members.length > 3 ?
                         <>
-                                <Tag key={members[0].userId}>
-                                    {members[0].name.charAt(0).toUpperCase()}
-                                    {/* {member.toUpperCase()} */}
-                                </Tag>
-                                <Tag key={members[1].userId}>
-                                    {members[1].name.charAt(0).toUpperCase()}
-                                    {/* {member.toUpperCase()} */}
-                                </Tag>
-                                 <Tag key={members[2].userId}>
-                                    {`+${members.length-2}`}
-                                    {/* {member.toUpperCase()} */}
-                                </Tag>                
-                        </> 
+                            <Tag key={members[0].userId}>
+                                {members[0].name.charAt(0).toUpperCase()}
+                                {/* {member.toUpperCase()} */}
+                            </Tag>
+                            <Tag key={members[1].userId}>
+                                {members[1].name.charAt(0).toUpperCase()}
+                                {/* {member.toUpperCase()} */}
+                            </Tag>
+                            <Tag key={members[2].userId}>
+                                {`+${members.length - 2}`}
+                                {/* {member.toUpperCase()} */}
+                            </Tag>
+                        </>
                         :
                         <>
                             {members.map((member) => {
@@ -116,30 +129,41 @@ export default function ProjectManager() {
 
                     }
                 </>
-                // <> 
-                //     {members.map((member) => {
-                //         // let color = member.length > 5 ? 'geekblue' : 'green';
-                //         // if (member === 'loser') {
-                //             // color = 'volcano';
-                //         // }
-                //         // console.log(member)
-                //         return (
-                //             <Tag key={member.userId}>
-                //                 {member.name.charAt(0).toUpperCase()}
-                //                 {/* {member.toUpperCase()} */}
-                //             </Tag>
-                //         );
-                //     })}
-                // </>
             ),
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_, record) => (
+            dataIndex: 'id',
+            render: (id) => (
                 <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
+                    <button className='btn btn-primary btn-sm' data-toggle="modal" data-target="#exampleModal" onClick={() => {
+                        // setProjectIdEdit(id) 
+                        let token = localStorage.getItem(TOKEN)
+                        let getProInfo = getProjectInfo(id, token)
+                        getProInfo.then((result) => {
+                            // console.log(result.data.content)
+                            setProjectIdEdit(result.data.content)
+                        }).catch((error) => {
+                            console.log(error)
+                        })
+                    }}>
+                        E
+                    </button>
+                    <button className='btn btn-danger btn-sm' onClick={() => {
+                        let token = localStorage.getItem(TOKEN)
+                        if (window.confirm("Bạn có chắc muốn xoá không")) {
+                            let deletePro = deleteProject(id, token)
+                            deletePro
+                                .then(() => {
+                                    alert('Xoá thành công')
+                                })
+                                .catch((error) => {
+                                    alert(error.response.data.content)
+                                })
+                        }
+                    }}>D</button>
+
                 </Space>
             ),
         },
@@ -167,12 +191,43 @@ export default function ProjectManager() {
     //     },
     // ];
 
+    let handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(projectIdEdit)
+        let data = {
+            "projectName": projectIdEdit.projectName,
+            "description": projectIdEdit.description,
+            "categoryId": projectIdEdit.projectCategory.id
+        }
+
+        if (projectIdEdit.projectName !== '') {
+            let token = localStorage.getItem(TOKEN)
+            let update = updateProject(projectIdEdit.id, token, data)
+            console.log(data)
+            update.then((result)=> {
+                // console.log(result)
+                alert('Update project thành công')
+            })
+            .catch((error)=> {
+                // console.log(error)
+                alert('Update project không thành công')
+            })
+        } else {
+            alert('Vui lòng điền đầy đủ thông tin')
+        }
+    }
+
+    let handleChangeForm = (e) => {
+        setProjectIdEdit({ ...projectIdEdit, [e.target.name]: e.target.value })
+    }
     return (
         <div className='projectManager'>
             <div className='projectManager_Container'>
                 <div className='projectManager_ContainerTitle'>
                     <h3>Project Management</h3>
-                    <button className='btn btn-success'>Create Project</button>
+                    <button className='btn btn-success' data-toggle="modal" data-target="#exampleModal" onClick={() => {
+                        setProjectIdEdit(nullInfo)
+                    }}>Create Project</button>
                 </div>
                 <Space className='searchInput' direction="vertical">
                     <Search
@@ -184,6 +239,55 @@ export default function ProjectManager() {
                     />
                 </Space>
                 <Table columns={columns} dataSource={projectList} />
+            </div>
+            {/* <!-- Modal --> */}
+            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Edit Project</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label>Project Id</label>
+                                    <input name='id' type="text" value={projectIdEdit.id} disabled='disabled' className="form-control" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Project Name</label>
+                                    <input name='projectName' onChange={handleChangeForm} value={projectIdEdit.projectName} type="text" className="form-control" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Project Category</label>
+                                    {/* <input type="text" className="form-control" /> */}
+                                    <select name="categoryId" onChange={(e) => {
+                                        setProjectIdEdit({
+                                            ...projectIdEdit, "projectCategory": {
+                                                "id": e.target.value,
+                                                "name": ""
+                                            },
+                                        })
+                                    }} value={projectIdEdit.projectCategory.id} className="form-control">
+                                        <option value="1">Dự án web</option>
+                                        <option value="2">Dự án phần mềm</option>
+                                        <option value="3">Dự án di động</option>
+                                    </select>
+                                </div>
+                                <JoditEditor onChange={newContent => {
+                                    // console.log(newContent)
+                                    setProjectIdEdit({ ...projectIdEdit, 'description': newContent })
+                                }} name='description' value={projectIdEdit.description} />
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" className="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )
