@@ -76,3 +76,15 @@ export const updateProject = (id, token, data) => {
         data: data
     });
 }
+
+export const createProject = (token, data) => {
+    return axios({
+        method: 'post',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/createProjectAuthorize`,
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        },
+        data: data
+    });
+}

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import { AudioOutlined } from '@ant-design/icons';
 import { Input, Space, Table, Tag } from 'antd';
-import { deleteProject, getAllProject, getProjectInfo, updateProject } from '../../services/services';
+import { createProject, deleteProject, getAllProject, getProjectInfo, updateProject } from '../../services/services';
 import { TOKEN } from '../../ulti/setting';
 import JoditEditor from 'jodit-react';
 import { number } from 'yup';
+import { history } from '../../App';
 // import { useFormik } from 'formik';
 const { Search } = Input;
 
@@ -157,6 +158,7 @@ export default function ProjectManager() {
                             deletePro
                                 .then(() => {
                                     alert('Xoá thành công')
+                                    history.go(0)
                                 })
                                 .catch((error) => {
                                     alert(error.response.data.content)
@@ -202,16 +204,28 @@ export default function ProjectManager() {
 
         if (projectIdEdit.projectName !== '') {
             let token = localStorage.getItem(TOKEN)
-            let update = updateProject(projectIdEdit.id, token, data)
-            console.log(data)
-            update.then((result)=> {
-                // console.log(result)
-                alert('Update project thành công')
-            })
-            .catch((error)=> {
-                // console.log(error)
-                alert('Update project không thành công')
-            })
+            if (projectIdEdit.create === true) {
+                console.log(true)
+                let create = createProject(token, data)
+                create.then((result) => {
+                    alert('Create project thành công')
+                    history.go(0)
+                })
+                .catch((error)=> {
+                    alert('Create project không thành công')
+                })
+
+            } else {
+                let update = updateProject(projectIdEdit.id, token, data)
+                console.log(data)
+                update.then((result) => {
+                    alert('Update project thành công')
+                    history.go(0)
+                })
+                    .catch((error) => {
+                        alert('Update project không thành công')
+                    })
+            }
         } else {
             alert('Vui lòng điền đầy đủ thông tin')
         }
@@ -277,7 +291,6 @@ export default function ProjectManager() {
                                     </select>
                                 </div>
                                 <JoditEditor onChange={newContent => {
-                                    // console.log(newContent)
                                     setProjectIdEdit({ ...projectIdEdit, 'description': newContent })
                                 }} name='description' value={projectIdEdit.description} />
                                 <div className="modal-footer">
