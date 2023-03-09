@@ -98,3 +98,16 @@ export const getProjectCategory = () => {
         }
     });
 }
+
+
+export const removeUserFromProject = (token, data) => {
+    return axios({
+        method: 'post',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/removeUserFromProject`,
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        },
+        data: data
+    });
+}

@@ -1,16 +1,56 @@
 import React from 'react'
+import { removeUserFromProject } from '../../services/services'
+import { TOKEN } from '../../ulti/setting'
 
 export default function MembersListProject(props) {
-    // console.log(props.member)
     let generateMem = () => {
-        return (
-            <div>123</div>
+        return props.member[0].map((mem) => {
+            return <tr>
+                <td>{mem.userId}</td>
+                <td><img className='avatar' src={mem.avatar} alt="" srcset="" /></td>
+                <td>{mem.name}</td>
+                <td><button className='btn btn-danger btn-sm' onClick={() =>{
+                    let token = localStorage.getItem(TOKEN)
+                    let data = {
+                        projectId: props.member[1],
+                        userId: mem.userId
+                    }
+                    let removeUser = removeUserFromProject(token, data)
+                    removeUser.then(() => {
+                        console.log('Xoa thanh cong')
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        alert(error.response.data.message)
+                    })
+                }}>D</button></td>
+            </tr>
+        }
         )
     }
     return (
-        // console.log(props.member)
         <div className='memberTable py-2'>
-            {generateMem()}
+            <h5>Members</h5>
+
+
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Avatar</th>
+                        <th scope="col">Name</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                     {generateMem()}
+                </tbody>
+            </table>
+
+
+
+
+           
         </div>
     )
 }

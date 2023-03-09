@@ -39,7 +39,7 @@
 
 .memberList {
   position: relative;
-  z-index: 1;
+  /* z-index: -1; */
   display: inline-block;
 }
 
@@ -49,8 +49,12 @@
 
 .members {
   position: absolute;
-  top: 20px;
-  /* display: none; */
+  top: 23px;
+  display: none;
   background-color: white;
-  z-index: -1;
+  z-index: 4;
+}
+
+.members .memberTable .avatar {
+  width: 30px;
 }

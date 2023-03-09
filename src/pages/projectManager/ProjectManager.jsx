@@ -72,7 +72,7 @@ export default function ProjectManager() {
                     name: project.projectName,
                     categoryName: project.categoryName,
                     creator: project.creator.name,
-                    tags: project.members
+                    tags: [project.members, project.id]
                 }
             })
             setProjectList(projectArr)
@@ -91,7 +91,7 @@ export default function ProjectManager() {
             dataIndex: 'name',
             key: 'name',
             sorter: (a, b) => a.name.length - b.name.length,
-            render: (text) => <a>{text}</a>,
+            render: (text) => <div>{text}</div>,
         },
         {
             title: 'Category name',
@@ -109,16 +109,17 @@ export default function ProjectManager() {
             dataIndex: 'member',
             render: (_, { tags: members }) => (
                 <>
+                {console.log(members)}
                     {members.length > 3 ?
                         <>
                             <div className='memberList'>
-                                <Tag key={members[0].userId}>
-                                    {members[0].name.charAt(0).toUpperCase()}
+                                <Tag key={members[0][0].userId}>
+                                    {members[0][0].name.charAt(0).toUpperCase()}
                                 </Tag>
-                                <Tag key={members[1].userId}>
-                                    {members[1].name.charAt(0).toUpperCase()}
+                                <Tag key={members[0][1].userId}>
+                                    {members[0][1].name.charAt(0).toUpperCase()}
                                 </Tag>
-                                <Tag key={members[2].userId}>
+                                <Tag key={members[0][2].userId}>
                                     ...
                                 </Tag>
 
@@ -126,14 +127,14 @@ export default function ProjectManager() {
                                     <MembersListProject member={members} />
                                 </div>
                             </div>
-                            <Tag key={members[2] + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
+                            <Tag key={members[0][2] + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
                                 +
                             </Tag>
                         </>
                         :
                         <>
                             <div className='memberList'>
-                                {members.map((member) => {
+                                {members[0].map((member) => {
                                     // let color = member.length > 5 ? 'geekblue' : 'green';
                                     // if (member === 'loser') {
                                     // color = 'volcano';
@@ -145,12 +146,12 @@ export default function ProjectManager() {
                                         </Tag>
                                     );
                                 })}
-
                                 <div className='members'>
+                                    {/* {console.log(members)} */}
                                     <MembersListProject member={members} />
                                 </div>
                             </div>
-                            <Tag key={members.userId + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
+                            <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
                                 +
                             </Tag>
                         </>
@@ -263,14 +264,6 @@ export default function ProjectManager() {
                 <div className='projectManager_ContainerTitle'>
                     <h3>Project Management</h3>
                     <button className='btn btn-success' data-toggle="modal" data-target="#exampleModal" onClick={() => {
-
-                        // let projectCategory = getProjectCategory()
-                        // projectCategory.then((result) => {
-                        //     console.log(result.content)
-                        //     setProjectIdEdit(nullInfo)
-                        // })
-
-
                         setProjectIdEdit(nullInfo)
                     }}>Create Project</button>
                 </div>
