@@ -111,3 +111,14 @@ export const removeUserFromProject = (token, data) => {
         data: data
     });
 }
+
+export const getUsers = (token) => {
+    return axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Users/getUser`,
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        }
+    });
+}

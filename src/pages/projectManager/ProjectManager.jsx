@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-// import { AudioOutlined } from '@ant-design/icons';
-import { Input, Space, Table, Tag } from 'antd';
-import { Button, message, Popconfirm } from 'antd';
-import { createProject, deleteProject, getAllProject, getProjectCategory, getProjectInfo, updateProject } from '../../services/services';
+import { Input, Popover, Space, Table, Tag, Button } from 'antd';
+import { createProject, deleteProject, getAllProject, getProjectCategory, getProjectInfo, getUsers, updateProject } from '../../services/services';
 import { TOKEN } from '../../ulti/setting';
 import JoditEditor from 'jodit-react';
 import { number } from 'yup';
 import { history } from '../../App';
 import MembersListProject from '../components/MembersListProject';
-// import { useFormik } from 'formik';
+import AddUser from '../components/AddUser';
 const { Search } = Input;
 
-
-// import {  } from 'antd';
 
 export default function ProjectManager() {
 
@@ -40,11 +36,24 @@ export default function ProjectManager() {
     useEffect(() => {
         getAllProjectList();
         getCategory();
+        getArrUsers()
     }, [])
 
     let [category, setCategory] = useState([])
-    let [projectList, setProjectList] = useState([
-    ])
+    let [projectList, setProjectList] = useState([])
+    let [users, setUsers] = useState([])
+
+    let content = () => {
+        return <AddUser users={users} />
+    }
+
+    let getArrUsers = () => {
+        let token = localStorage.getItem(TOKEN)
+        let getListUser = getUsers(token)
+        getListUser.then((result) => {
+            setUsers(result.data.content)
+        })
+    }
 
     let getCategory = () => {
         let projectCategory = getProjectCategory()
@@ -125,13 +134,12 @@ export default function ProjectManager() {
                                     <MembersListProject member={members} />
                                 </div>
                             </div>
+
                             <div className='addMembers'>
-                                <Tag key={members[0][2] + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
-                                    <div className='add'>+</div>
-                                </Tag>
+                                <Popover placement="rightTop" title={'Add user'} content={content()} trigger="click">
+                                    <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }}>  <div >+</div></Tag>
+                                </Popover>
                             </div>
-
-
                         </>
                         :
                         <>
@@ -148,9 +156,12 @@ export default function ProjectManager() {
                                     <MembersListProject member={members} />
                                 </div>
                             </div>
-                            <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
-                                <div>+</div>
-                            </Tag>
+
+                            <Popover placement="rightTop" title={'Add user'} content={content()} trigger="click">
+                                <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }}>
+                                    <div>+</div>
+                                </Tag>
+                            </Popover>
 
                         </>
                     }
