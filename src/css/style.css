@@ -58,3 +58,12 @@
 .members .memberTable .avatar {
   width: 30px;
 }
+.addMembers {
+  display: inline-block;
+}
+/* .addMembers .aaaa {
+  display: none;
+}
+.addMembers:target .aaaa {
+  display: inline-block;
+} */

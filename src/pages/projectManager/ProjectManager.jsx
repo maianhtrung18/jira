@@ -54,7 +54,6 @@ export default function ProjectManager() {
     }
 
     let generateProjectCategory = () => {
-        // console.log(category)
         return category.map((element) => {
             return <option value={element.id}>{element.projectCategoryName}</option>
         })
@@ -109,8 +108,7 @@ export default function ProjectManager() {
             dataIndex: 'member',
             render: (_, { tags: members }) => (
                 <>
-                {console.log(members)}
-                    {members.length > 3 ?
+                    {members[0].length > 3 ?
                         <>
                             <div className='memberList'>
                                 <Tag key={members[0][0].userId}>
@@ -127,19 +125,18 @@ export default function ProjectManager() {
                                     <MembersListProject member={members} />
                                 </div>
                             </div>
-                            <Tag key={members[0][2] + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
-                                +
-                            </Tag>
+                            <div className='addMembers'>
+                                <Tag key={members[0][2] + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
+                                    <div className='add'>+</div>
+                                </Tag>
+                            </div>
+
+
                         </>
                         :
                         <>
                             <div className='memberList'>
                                 {members[0].map((member) => {
-                                    // let color = member.length > 5 ? 'geekblue' : 'green';
-                                    // if (member === 'loser') {
-                                    // color = 'volcano';
-                                    // }
-                                    // console.log(member)
                                     return (
                                         <Tag key={member.userId}>
                                             {member.name.charAt(0).toUpperCase()}
@@ -152,8 +149,9 @@ export default function ProjectManager() {
                                 </div>
                             </div>
                             <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
-                                +
+                                <div>+</div>
                             </Tag>
+
                         </>
                     }
                 </>
