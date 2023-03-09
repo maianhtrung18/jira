@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import { AudioOutlined } from '@ant-design/icons';
 import { Input, Space, Table, Tag } from 'antd';
-import { createProject, deleteProject, getAllProject, getProjectInfo, updateProject } from '../../services/services';
+import { Button, message, Popconfirm } from 'antd';
+import { createProject, deleteProject, getAllProject, getProjectCategory, getProjectInfo, updateProject } from '../../services/services';
 import { TOKEN } from '../../ulti/setting';
 import JoditEditor from 'jodit-react';
 import { number } from 'yup';
 import { history } from '../../App';
+import MembersListProject from '../components/MembersListProject';
 // import { useFormik } from 'formik';
 const { Search } = Input;
 
@@ -13,10 +15,6 @@ const { Search } = Input;
 // import {  } from 'antd';
 
 export default function ProjectManager() {
-
-    // ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
-    // let projectIdEdit = useRef()
-
 
     let nullInfo = {
         "lstTask": [
@@ -34,18 +32,34 @@ export default function ProjectManager() {
             "name": ""
         },
         "alias": "",
-        "create": true
+        "create": true,
     }
 
     let projectData = useRef()
     let [projectIdEdit, setProjectIdEdit] = useState(nullInfo)
     useEffect(() => {
-        // console.log('run after render')
-        getAllProjectList()
+        getAllProjectList();
+        getCategory();
     }, [])
 
+    let [category, setCategory] = useState([])
     let [projectList, setProjectList] = useState([
     ])
+
+    let getCategory = () => {
+        let projectCategory = getProjectCategory()
+        projectCategory.then((result) => {
+            setCategory(result.data.content)
+        })
+    }
+
+    let generateProjectCategory = () => {
+        // console.log(category)
+        return category.map((element) => {
+            return <option value={element.id}>{element.projectCategoryName}</option>
+        })
+    }
+
     let getAllProjectList = () => {
         let projectArr = []
         let getProjectList = getAllProject()
@@ -71,7 +85,6 @@ export default function ProjectManager() {
             dataIndex: 'id',
             key: 'id',
             sorter: (a, b) => a.name.length - b.name.length,
-            // render: (text) => <a>{text}</a>,
         },
         {
             title: 'Name',
@@ -98,36 +111,49 @@ export default function ProjectManager() {
                 <>
                     {members.length > 3 ?
                         <>
-                            <Tag key={members[0].userId}>
-                                {members[0].name.charAt(0).toUpperCase()}
-                                {/* {member.toUpperCase()} */}
-                            </Tag>
-                            <Tag key={members[1].userId}>
-                                {members[1].name.charAt(0).toUpperCase()}
-                                {/* {member.toUpperCase()} */}
-                            </Tag>
-                            <Tag key={members[2].userId}>
-                                {`+${members.length - 2}`}
-                                {/* {member.toUpperCase()} */}
+                            <div className='memberList'>
+                                <Tag key={members[0].userId}>
+                                    {members[0].name.charAt(0).toUpperCase()}
+                                </Tag>
+                                <Tag key={members[1].userId}>
+                                    {members[1].name.charAt(0).toUpperCase()}
+                                </Tag>
+                                <Tag key={members[2].userId}>
+                                    ...
+                                </Tag>
+
+                                <div className='members'>
+                                    <MembersListProject member={members} />
+                                </div>
+                            </div>
+                            <Tag key={members[2] + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
+                                +
                             </Tag>
                         </>
                         :
                         <>
-                            {members.map((member) => {
-                                // let color = member.length > 5 ? 'geekblue' : 'green';
-                                // if (member === 'loser') {
-                                // color = 'volcano';
-                                // }
-                                // console.log(member)
-                                return (
-                                    <Tag key={member.userId}>
-                                        {member.name.charAt(0).toUpperCase()}
-                                        {/* {member.toUpperCase()} */}
-                                    </Tag>
-                                );
-                            })}
-                        </>
+                            <div className='memberList'>
+                                {members.map((member) => {
+                                    // let color = member.length > 5 ? 'geekblue' : 'green';
+                                    // if (member === 'loser') {
+                                    // color = 'volcano';
+                                    // }
+                                    // console.log(member)
+                                    return (
+                                        <Tag key={member.userId}>
+                                            {member.name.charAt(0).toUpperCase()}
+                                        </Tag>
+                                    );
+                                })}
 
+                                <div className='members'>
+                                    <MembersListProject member={members} />
+                                </div>
+                            </div>
+                            <Tag key={members.userId + 1} style={{ cursor: 'pointer' }} onClick={() => { console.log(true) }}>
+                                +
+                            </Tag>
+                        </>
                     }
                 </>
             ),
@@ -139,11 +165,9 @@ export default function ProjectManager() {
             render: (id) => (
                 <Space size="middle">
                     <button className='btn btn-primary btn-sm' data-toggle="modal" data-target="#exampleModal" onClick={() => {
-                        // setProjectIdEdit(id) 
                         let token = localStorage.getItem(TOKEN)
                         let getProInfo = getProjectInfo(id, token)
                         getProInfo.then((result) => {
-                            // console.log(result.data.content)
                             setProjectIdEdit(result.data.content)
                         }).catch((error) => {
                             console.log(error)
@@ -165,7 +189,6 @@ export default function ProjectManager() {
                                 })
                         }
                     }}>D</button>
-
                 </Space>
             ),
         },
@@ -195,7 +218,7 @@ export default function ProjectManager() {
 
     let handleSubmit = (e) => {
         e.preventDefault()
-        console.log(projectIdEdit)
+        // console.log(projectIdEdit)
         let data = {
             "projectName": projectIdEdit.projectName,
             "description": projectIdEdit.description,
@@ -205,19 +228,18 @@ export default function ProjectManager() {
         if (projectIdEdit.projectName !== '') {
             let token = localStorage.getItem(TOKEN)
             if (projectIdEdit.create === true) {
-                console.log(true)
+                // console.log(true)
                 let create = createProject(token, data)
                 create.then((result) => {
                     alert('Create project thành công')
                     history.go(0)
                 })
-                .catch((error)=> {
-                    alert('Create project không thành công')
-                })
-
+                    .catch((error) => {
+                        alert('Create project không thành công')
+                    })
             } else {
                 let update = updateProject(projectIdEdit.id, token, data)
-                console.log(data)
+                // console.log(data)
                 update.then((result) => {
                     alert('Update project thành công')
                     history.go(0)
@@ -234,12 +256,21 @@ export default function ProjectManager() {
     let handleChangeForm = (e) => {
         setProjectIdEdit({ ...projectIdEdit, [e.target.name]: e.target.value })
     }
+
     return (
         <div className='projectManager'>
             <div className='projectManager_Container'>
                 <div className='projectManager_ContainerTitle'>
                     <h3>Project Management</h3>
                     <button className='btn btn-success' data-toggle="modal" data-target="#exampleModal" onClick={() => {
+
+                        // let projectCategory = getProjectCategory()
+                        // projectCategory.then((result) => {
+                        //     console.log(result.content)
+                        //     setProjectIdEdit(nullInfo)
+                        // })
+
+
                         setProjectIdEdit(nullInfo)
                     }}>Create Project</button>
                 </div>
@@ -285,9 +316,7 @@ export default function ProjectManager() {
                                             },
                                         })
                                     }} value={projectIdEdit.projectCategory.id} className="form-control">
-                                        <option value="1">Dự án web</option>
-                                        <option value="2">Dự án phần mềm</option>
-                                        <option value="3">Dự án di động</option>
+                                        {generateProjectCategory()}
                                     </select>
                                 </div>
                                 <JoditEditor onChange={newContent => {

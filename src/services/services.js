@@ -88,3 +88,13 @@ export const createProject = (token, data) => {
         data: data
     });
 }
+
+export const getProjectCategory = () => {
+    return axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_DOMAIN}/api/ProjectCategory`,
+        headers: {
+            TokenCybersoft: studentToken,
+        }
+    });
+}

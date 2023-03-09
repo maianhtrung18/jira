@@ -36,3 +36,21 @@
 .searchInput {
   margin-top: 20px;
 }
+
+.memberList {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+.memberList:hover .members {
+  display: block;
+}
+
+.members {
+  position: absolute;
+  top: 20px;
+  /* display: none; */
+  background-color: white;
+  z-index: -1;
+}
