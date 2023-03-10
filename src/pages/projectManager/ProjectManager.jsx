@@ -7,7 +7,8 @@ import { number } from 'yup';
 import { history } from '../../App';
 import MembersListProject from '../components/MembersListProject';
 import AddUser from '../components/AddUser';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { projectManagerAction } from '../../redux/action/projectManagerAction';
 const { Search } = Input;
 
 
@@ -32,7 +33,7 @@ export default function ProjectManager() {
         "create": true,
     }
 
-    // let projectData = useRef()
+     let dispatch = useDispatch()
     let [projectIdEdit, setProjectIdEdit] = useState(nullInfo)
     useEffect(() => {
         getAllProjectList();
@@ -41,11 +42,8 @@ export default function ProjectManager() {
     }, [])
 
     let [category, setCategory] = useState([])
-    let [projectList, setProjectList] = useState([])
+    let projectList = useSelector(state => state.ProjectManagementReducer)
 
-    let projectList1 = useSelector(state => state.ProjectManagementReducer)
-
-    // console.log(projectList1)
     let [users, setUsers] = useState([])
 
     let content = (projectId) => {
@@ -74,22 +72,8 @@ export default function ProjectManager() {
     }
 
     let getAllProjectList = () => {
-        let projectArr = []
-        let getProjectList = getAllProject()
-        getProjectList.then((result) => {
-            // projectData.current = result.data.content
-            projectArr = result.data.content.map((project, index) => {
-                return {
-                    key: `${index}`,
-                    id: `${project.id}`,
-                    name: project.projectName,
-                    categoryName: project.categoryName,
-                    creator: project.creator.name,
-                    tags: [project.members, project.id]
-                }
-            })
-            setProjectList(projectArr)
-        })
+        let action = projectManagerAction()
+        dispatch(action)
     }
 
     const columns = [
@@ -197,7 +181,7 @@ export default function ProjectManager() {
                             deletePro
                                 .then(() => {
                                     alert('Xoá thành công')
-                                    history.go(0)
+                                    getAllProjectList()
                                 })
                                 .catch((error) => {
                                     alert(error.response.data.content)
@@ -233,7 +217,6 @@ export default function ProjectManager() {
 
     let handleSubmit = (e) => {
         e.preventDefault()
-        // console.log(projectIdEdit)
         let data = {
             "projectName": projectIdEdit.projectName,
             "description": projectIdEdit.description,
@@ -243,21 +226,19 @@ export default function ProjectManager() {
         if (projectIdEdit.projectName !== '') {
             let token = localStorage.getItem(TOKEN)
             if (projectIdEdit.create === true) {
-                // console.log(true)
                 let create = createProject(token, data)
                 create.then((result) => {
                     alert('Create project thành công')
-                    history.go(0)
+                    getAllProjectList()
                 })
                     .catch((error) => {
                         alert('Create project không thành công')
                     })
             } else {
                 let update = updateProject(projectIdEdit.id, token, data)
-                // console.log(data)
                 update.then((result) => {
                     alert('Update project thành công')
-                    history.go(0)
+                    getAllProjectList()
                 })
                     .catch((error) => {
                         alert('Update project không thành công')
