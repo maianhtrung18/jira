@@ -7,6 +7,7 @@ import { number } from 'yup';
 import { history } from '../../App';
 import MembersListProject from '../components/MembersListProject';
 import AddUser from '../components/AddUser';
+import { useSelector } from 'react-redux';
 const { Search } = Input;
 
 
@@ -31,7 +32,7 @@ export default function ProjectManager() {
         "create": true,
     }
 
-    let projectData = useRef()
+    // let projectData = useRef()
     let [projectIdEdit, setProjectIdEdit] = useState(nullInfo)
     useEffect(() => {
         getAllProjectList();
@@ -41,10 +42,14 @@ export default function ProjectManager() {
 
     let [category, setCategory] = useState([])
     let [projectList, setProjectList] = useState([])
+
+    let projectList1 = useSelector(state => state.ProjectManagementReducer)
+
+    // console.log(projectList1)
     let [users, setUsers] = useState([])
 
-    let content = () => {
-        return <AddUser users={users} />
+    let content = (projectId) => {
+        return <AddUser users={users} projectId={projectId}/>
     }
 
     let getArrUsers = () => {
@@ -72,7 +77,7 @@ export default function ProjectManager() {
         let projectArr = []
         let getProjectList = getAllProject()
         getProjectList.then((result) => {
-            projectData.current = result.data.content
+            // projectData.current = result.data.content
             projectArr = result.data.content.map((project, index) => {
                 return {
                     key: `${index}`,
@@ -136,7 +141,7 @@ export default function ProjectManager() {
                             </div>
 
                             <div className='addMembers'>
-                                <Popover placement="rightTop" title={'Add user'} content={content()} trigger="click">
+                                <Popover placement="rightTop" title={'Add user'} content={content(members[1])} trigger="click">
                                     <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }}>  <div >+</div></Tag>
                                 </Popover>
                             </div>
@@ -157,7 +162,7 @@ export default function ProjectManager() {
                                 </div>
                             </div>
 
-                            <Popover placement="rightTop" title={'Add user'} content={content()} trigger="click">
+                            <Popover placement="rightTop" title={'Add user'} content={content(members[1])} trigger="click">
                                 <Tag key={members[0].userId + 1} style={{ cursor: 'pointer' }}>
                                     <div>+</div>
                                 </Tag>

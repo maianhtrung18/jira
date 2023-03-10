@@ -122,3 +122,15 @@ export const getUsers = (token) => {
         }
     });
 }
+
+export const assignUserProject = (token, data) => {
+    return axios({
+        method: 'post',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/assignUserProject`,
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        },
+        data: data
+    });
+}
