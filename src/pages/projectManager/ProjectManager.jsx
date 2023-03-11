@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Input, Popover, Space, Table, Tag, Button } from 'antd';
-import { createProject, deleteProject, getAllProject, getProjectCategory, getProjectInfo, getUsers, updateProject } from '../../services/services';
-import { TOKEN } from '../../ulti/setting';
+import React, { useEffect, useState } from 'react'
+import { Input, Popover, Space, Table, Tag } from 'antd';
+import { createProject, deleteProject, getProjectCategory, getProjectInfo, getUsers, updateProject } from '../../services/services';
+import { SEARCH_PROJECT, TOKEN } from '../../ulti/setting';
 import JoditEditor from 'jodit-react';
 import { number } from 'yup';
-import { history } from '../../App';
 import MembersListProject from '../components/MembersListProject';
 import AddUser from '../components/AddUser';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,21 +32,20 @@ export default function ProjectManager() {
         "create": true,
     }
 
-     let dispatch = useDispatch()
+    let dispatch = useDispatch()
     let [projectIdEdit, setProjectIdEdit] = useState(nullInfo)
     useEffect(() => {
         getAllProjectList();
         getCategory();
-        getArrUsers()
+        getArrUsers();
     }, [])
 
     let [category, setCategory] = useState([])
-    let projectList = useSelector(state => state.ProjectManagementReducer)
-
+    let projectList = useSelector(state => state.ProjectManagementReducer[0])
     let [users, setUsers] = useState([])
 
     let content = (projectId) => {
-        return <AddUser users={users} projectId={projectId}/>
+        return <AddUser users={users} projectId={projectId} />
     }
 
     let getArrUsers = () => {
@@ -228,7 +226,6 @@ export default function ProjectManager() {
             if (projectIdEdit.create === true) {
                 let create = createProject(token, data)
                 create.then((result) => {
-                    alert('Create project thành công')
                     getAllProjectList()
                 })
                     .catch((error) => {
@@ -237,7 +234,6 @@ export default function ProjectManager() {
             } else {
                 let update = updateProject(projectIdEdit.id, token, data)
                 update.then((result) => {
-                    alert('Update project thành công')
                     getAllProjectList()
                 })
                     .catch((error) => {
@@ -263,9 +259,29 @@ export default function ProjectManager() {
                     }}>Create Project</button>
                 </div>
                 <Space className='searchInput' direction="vertical">
+                    {/* {takeProject()} */}
                     <Search
+                        onChange={(event) => {
+                            // console.log(event.target.value)
+                            // projectList = projectListAll.filter((project) => {
+                            //     return project.name.toLowerCase().match(event.target.value.toLocaleLowerCase())
+                            // })
+                            // console.log(projectList)
+                            // setRerender(true)
+                            // setProjectList(projectList)
+                            // getAllProjectList()
+                            let action = {
+                                type: SEARCH_PROJECT,
+                                // data: projectList,
+                                keyword: event.target.value
+                            }
+                            dispatch(action)
+                        }}
                         placeholder="input search text"
-                        // onSearch={onSearch}
+                        onSearch={(value, event) => {
+                            console.log(value)
+                            console.log(event)
+                        }}
                         style={{
                             width: 200,
                         }}
@@ -273,6 +289,8 @@ export default function ProjectManager() {
                 </Space>
                 <Table columns={columns} dataSource={projectList} />
             </div>
+
+
             {/* <!-- Modal --> */}
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
