@@ -3,7 +3,7 @@ import { ACCESS_TOKEN, TOKEN_CYBER, URL_API } from "../ulti/constants"
 import { TOKEN } from "../ulti/setting"
 
 export const DeleteUser = (idUser) => {
-    let promise = axios({
+    return axios({
         method: 'DELETE',
         url: `${URL_API}/Users/deleteUser?id=${idUser}`,
         headers:{
@@ -11,10 +11,15 @@ export const DeleteUser = (idUser) => {
             'TokenCybersoft': TOKEN_CYBER 
         }
     })
-    promise.then((result) => {
-        console.log(result)
-    })
-    promise.catch((err) => {
-        console.log(err)
+}
+
+export const EditUser = (userEdit) => {
+    return axios({
+        method:'PUT',
+        url: `${URL_API}/Users/editUser`,
+        data: userEdit,
+        headers:{
+            'TokenCybersoft': TOKEN_CYBER
+        }
     })
 }
