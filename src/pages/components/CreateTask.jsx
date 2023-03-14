@@ -9,7 +9,7 @@ import JoditEditor from 'jodit-react';
 import { getStatusService } from '../../services/createTaskService';
 
 export default function CreateTask() {
-    let [status, setStatus] = useState({})
+    let [status, setStatus] = useState([])
     useEffect(() =>{
         getStatus()    
     },[])
@@ -44,6 +44,7 @@ export default function CreateTask() {
     }
 
     const renderStatus = () => {
+        console.log(status)
         return status.map((stt) => {
             return <option key={stt.statusId} value={stt.statusId}>{stt.statusName}</option>
         })
