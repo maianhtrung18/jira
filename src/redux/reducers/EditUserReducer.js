@@ -7,7 +7,16 @@ const initialState = {
         passWord: "string",
         email: "string",
         name: "string",
-        phoneNumber: "string"
+        phoneNumber: "string",
+        passConfirm: ""
+    },
+    userErr : {
+        id: "string",
+        passWord: "string",
+        email: "string",
+        name: "string",
+        phoneNumber: "string",
+        passConfirm: "",
     }
 }
 

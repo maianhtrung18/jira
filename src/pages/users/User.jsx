@@ -11,7 +11,6 @@ import { TOKEN } from '../../ulti/setting';
 
 export default function User() {
   let [userList, setUserList] = useState([]);
-  let userEdit = {};
   let dispatch = useDispatch();
   let dispatch2 = useDispatch();
   useEffect(() => {
@@ -69,12 +68,13 @@ export default function User() {
       render: (text, record, index) => (
         <Space size="middle">
           <button type="button" style={{ color: 'blue' }} className="btn" data-toggle="modal" data-target="#exampleModal" onClick={() => {
-            userEdit = {
+            let userEdit = {
               id: record.id,
               passWord: "",
               email: record.email,
               name: record.name,
-              phoneNumber: record.phone
+              phoneNumber: record.phone,
+              passConfirm: ""
             }
 
             let action = {
@@ -88,9 +88,14 @@ export default function User() {
           </button>
          
           <button className='btn' style={{ color: 'red' }} onClick={() => {
-            console.log(record.id, 'record id')
-            DeleteUser(record.id);
-            getUserList();
+            console.log(record.id, 'record id');
+            let deleteUser = DeleteUser(record.id);
+            deleteUser.then((res) => {
+              getUserList();
+            })
+            deleteUser.catch((err) => {
+              console.log(err);
+            })
           }}><DeleteOutlined /></button>
         </Space>
       ),
@@ -120,7 +125,7 @@ export default function User() {
         }
       })
       setUserList(arrayUser)
-      console.log(userList, 'useList')
+      //console.log(userList, 'useList')
       // let action = {
       //   type: 'GET_USER_LIST',
       //   data: arrayUser,
@@ -135,7 +140,7 @@ export default function User() {
 
   return (
     <div className='container mt-4'>
-       <FormEditUser />
+      <FormEditUser getUserList={getUserList}/>
       <Table columns={columns} dataSource={userList} />
     </div>
   )

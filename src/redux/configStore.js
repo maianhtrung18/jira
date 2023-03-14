@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
+import { createTaskReducer } from "./reducers/createTaskReducer";
 import { EditUserReducer } from "./reducers/EditUserReducer";
 import { loginReducer } from "./reducers/loginReducer";
 import { ProjectManagementReducer } from "./reducers/ProjectManagementReducer";
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     loginReducer,
     UserJiraReducer,
     EditUserReducer,
+    createTaskReducer,
     ProjectManagementReducer
     
 })
