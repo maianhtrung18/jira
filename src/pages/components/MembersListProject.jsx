@@ -1,15 +1,25 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { projectManagerAction } from '../../redux/action/projectManagerAction'
 import { removeUserFromProject } from '../../services/services'
 import { TOKEN } from '../../ulti/setting'
 
+
 export default function MembersListProject(props) {
+
+    let dispatch = useDispatch()
+    let reRender = () => {
+        let action = projectManagerAction()
+        dispatch(action)
+    }
+
     let generateMem = () => {
         return props.member[0].map((mem) => {
             return <tr>
                 <td>{mem.userId}</td>
                 <td><img className='avatar' src={mem.avatar} alt="" srcset="" /></td>
                 <td>{mem.name}</td>
-                <td><button className='btn btn-danger btn-sm' onClick={() =>{
+                <td><button className='btn btn-danger btn-sm' onClick={() => {
                     let token = localStorage.getItem(TOKEN)
                     let data = {
                         projectId: props.member[1],
@@ -18,11 +28,12 @@ export default function MembersListProject(props) {
                     let removeUser = removeUserFromProject(token, data)
                     removeUser.then(() => {
                         console.log('Xoa thanh cong')
+                        reRender()
                     })
-                    .catch((error) => {
-                        console.log(error)
-                        alert(error.response.data.message)
-                    })
+                        .catch((error) => {
+                            console.log(error)
+                            alert(error.response.data.message)
+                        })
                 }}>D</button></td>
             </tr>
         }
@@ -43,14 +54,14 @@ export default function MembersListProject(props) {
                     </tr>
                 </thead>
                 <tbody>
-                     {generateMem()}
+                    {generateMem()}
                 </tbody>
             </table>
 
 
 
 
-           
+
         </div>
     )
 }

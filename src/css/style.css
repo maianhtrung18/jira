@@ -61,9 +61,12 @@
 .addMembers {
   display: inline-block;
 }
-/* .addMembers .aaaa {
-  display: none;
+
+.tableUserContainer {
+  height: 400px;
+  overflow: scroll;
 }
-.addMembers:target .aaaa {
-  display: inline-block;
-} */
+
+.listUserAdd_Table .table_Row {
+  cursor: pointer;
+}
