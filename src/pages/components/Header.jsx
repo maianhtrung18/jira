@@ -1,11 +1,13 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { OPEN_DRAWER } from '../../ulti/constants'
 import { USER_INFO } from '../../ulti/setting'
 
 export default function Header() {
     let userInfo = useSelector(state => state.loginReducer)
-    // console.log(userInfo)
+    let dispatch = useDispatch()
+    console.log(userInfo)
 
     if (userInfo === null){
         console.log('null')
@@ -46,7 +48,9 @@ export default function Header() {
                           </div>
                       </li>
                       <li className="nav-item">
-                          <a className="nav-link" href="#">Create Project</a>
+                          <a className="nav-link" href="#" onClick={() => {
+                            dispatch({type:OPEN_DRAWER})
+                          }}>Create Task</a>
                       </li>
                   </ul>
               </div>

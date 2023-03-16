@@ -6,3 +6,5 @@ export const DANG_NHAP = 'DANG_NHAP'
 export const ACCESS_TOKEN = "ACCESS_TOKEN"
 export const USER = "USER"
 export const EDIT_USER = 'EDIT_USER'
+export const OPEN_DRAWER = 'OPEN_DRAWER'
+export const CLOSE_DRAWER = 'CLOSE_DRAWER'
