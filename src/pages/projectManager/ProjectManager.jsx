@@ -178,7 +178,6 @@ export default function ProjectManager() {
                             let deletePro = deleteProject(id, token)
                             deletePro
                                 .then(() => {
-                                    alert('Xoá thành công')
                                     getAllProjectList()
                                 })
                                 .catch((error) => {
@@ -262,17 +261,8 @@ export default function ProjectManager() {
                     {/* {takeProject()} */}
                     <Search
                         onChange={(event) => {
-                            // console.log(event.target.value)
-                            // projectList = projectListAll.filter((project) => {
-                            //     return project.name.toLowerCase().match(event.target.value.toLocaleLowerCase())
-                            // })
-                            // console.log(projectList)
-                            // setRerender(true)
-                            // setProjectList(projectList)
-                            // getAllProjectList()
                             let action = {
                                 type: SEARCH_PROJECT,
-                                // data: projectList,
                                 keyword: event.target.value
                             }
                             dispatch(action)
