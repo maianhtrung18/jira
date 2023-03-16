@@ -17,7 +17,7 @@ export default function Header() {
          console.log(userInfo.email)
     }
     //let user = localStorage.getItem(JSON.stringify(USER_INFO));
-    console.log(userInfo.name)
+    // console.log(userInfo.name)
     return (
       <div className='d-flex justify-content-between align-items-center headerJira'>
           <nav className="navbar navbar-expand-lg navbar-light">
