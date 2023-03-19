@@ -8,7 +8,6 @@ export const ProjectManagementReducer = (state = initialState, action) => {
              let listSearchGet = action.data.filter((project) => {
                 return project.name[0].toLowerCase().match(state[2].toLowerCase())
             })
-            console.log([...listSearchGet], [...action.data], state[2])
             return [[...listSearchGet], [...action.data], state[2]]
 
         case SEARCH_PROJECT:

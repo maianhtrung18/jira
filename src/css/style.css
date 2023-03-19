@@ -70,3 +70,12 @@
 .listUserAdd_Table .table_Row {
   cursor: pointer;
 }
+
+.userLink {
+  text-decoration: none;
+  color: white;
+}
+
+.userLink:hover {
+  color: blue;
+}

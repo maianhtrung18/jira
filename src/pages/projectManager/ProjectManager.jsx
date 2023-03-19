@@ -192,45 +192,45 @@ export default function ProjectManager() {
         },
     ];
 
-    const data = [
-        {
-            "key": "0",
-            "id": "11896",
-            "name": [
-                "project A",'1234'
-            ],
-            "categoryName": "Dự án web",
-            "creator": "asean",
-            "tags": [
-                [],
-                11896
-            ]
-        },{
-            "key": "0",
-            "id": "11896",
-            "name": [
-                "project A", '123'
-            ],
-            "categoryName": "Dự án phan mem",
-            "creator": "asean",
-            "tags": [
-                [],
-                11896
-            ]
-        },{
-            "key": "0",
-            "id": "11896",
-            "name": [
-                "project A"
-            ],
-            "categoryName": "Dự án di dong",
-            "creator": "asean",
-            "tags": [
-                [],
-                11896
-            ]
-        }
-    ];
+    // const data = [
+    //     {
+    //         "key": "0",
+    //         "id": "11896",
+    //         "name": [
+    //             "project A",'1234'
+    //         ],
+    //         "categoryName": "Dự án web",
+    //         "creator": "asean",
+    //         "tags": [
+    //             [],
+    //             11896
+    //         ]
+    //     },{
+    //         "key": "0",
+    //         "id": "11896",
+    //         "name": [
+    //             "project A", '123'
+    //         ],
+    //         "categoryName": "Dự án phan mem",
+    //         "creator": "asean",
+    //         "tags": [
+    //             [],
+    //             11896
+    //         ]
+    //     },{
+    //         "key": "0",
+    //         "id": "11896",
+    //         "name": [
+    //             "project A"
+    //         ],
+    //         "categoryName": "Dự án di dong",
+    //         "creator": "asean",
+    //         "tags": [
+    //             [],
+    //             11896
+    //         ]
+    //     }
+    // ];
 
     let handleSubmit = (e) => {
         e.preventDefault()
@@ -299,7 +299,6 @@ export default function ProjectManager() {
                 </Space>
                 <Table columns={columns} dataSource={projectList} />
             </div>
-
 
             {/* <!-- Modal --> */}
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
