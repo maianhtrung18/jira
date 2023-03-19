@@ -8,7 +8,9 @@ import MembersListProject from '../components/MembersListProject';
 import AddUser from '../components/AddUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectManagerAction } from '../../redux/action/projectManagerAction';
+import { NavLink } from 'react-router-dom';
 const { Search } = Input;
+
 
 
 export default function ProjectManager() {
@@ -86,7 +88,7 @@ export default function ProjectManager() {
             dataIndex: 'name',
             key: 'name',
             sorter: (a, b) => a.name.length - b.name.length,
-            render: (text) => <div>{text}</div>,
+            render: (name) => <div><NavLink to={`/projectdetail/${name[1]}`}>{name[0]}</NavLink></div>
         },
         {
             title: 'Category name',
@@ -190,27 +192,45 @@ export default function ProjectManager() {
         },
     ];
 
-    // const data = [
-    //     {
-    //         key: '1',
-    //         id: '123',
-    //         name: 'John Brown',
-    //         age: 32,
-    //         tags: ['nice', 'developer'],
-    //     },
-    //     {
-    //         key: '2',
-    //         name: 'Jim Green',
-    //         age: 42,
-    //         tags: ['loser'],
-    //     },
-    //     {
-    //         key: '3',
-    //         name: 'Joe Black',
-    //         age: 32,
-    //         tags: ['cool', 'teacher'],
-    //     },
-    // ];
+    const data = [
+        {
+            "key": "0",
+            "id": "11896",
+            "name": [
+                "project A",'1234'
+            ],
+            "categoryName": "Dự án web",
+            "creator": "asean",
+            "tags": [
+                [],
+                11896
+            ]
+        },{
+            "key": "0",
+            "id": "11896",
+            "name": [
+                "project A", '123'
+            ],
+            "categoryName": "Dự án phan mem",
+            "creator": "asean",
+            "tags": [
+                [],
+                11896
+            ]
+        },{
+            "key": "0",
+            "id": "11896",
+            "name": [
+                "project A"
+            ],
+            "categoryName": "Dự án di dong",
+            "creator": "asean",
+            "tags": [
+                [],
+                11896
+            ]
+        }
+    ];
 
     let handleSubmit = (e) => {
         e.preventDefault()

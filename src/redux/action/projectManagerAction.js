@@ -14,12 +14,14 @@ export const projectManagerAction = () => {
                 return {
                     key: `${index}`,
                     id: `${project.id}`,
-                    name: project.projectName,
+                    name: [project.projectName, project.id],
                     categoryName: project.categoryName,
                     creator: project.creator.name,
                     tags: [project.members, project.id]
                 }
             })
+
+            // console.log(projectArr)
 
             let action = {
                 type: GET_PROJECT,

@@ -70,9 +70,7 @@ export default function Header() {
               <button className='btn btn-info'>
                   {userInfo.name}
               </button>
-
           </div>
-
       </div >
   )
 }

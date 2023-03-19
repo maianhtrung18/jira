@@ -10,6 +10,7 @@ import ProjectManagerTemplate from './templates/ProjectManagerTemplate';
 import ProjectManager from './pages/projectManager/ProjectManager';
 import User from './pages/users/User';
 import CreateTask from './pages/components/CreateTask';
+import ProjectDetail from './pages/projectDetail/ProjectDetail';
 
 export const history = createBrowserHistory()
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <ProjectManagerTemplate exact path='/home' component={ProjectManager}/>
         <ProjectManagerTemplate exact path='/user' component={User}/>
         <ProjectManagerTemplate exact path='/' component={ProjectManager}/>
+        <ProjectManagerTemplate exact path='/projectdetail/:id' component={ProjectDetail}/>
       </Switch>
     </Router>
   );
