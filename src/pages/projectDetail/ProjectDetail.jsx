@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom'
 import { getProjectDetail } from '../../services/services'
 import { TOKEN } from '../../ulti/setting'
 import { Input, Popover, Space, Table, Tag } from 'antd';
+import { useDispatch } from 'react-redux';
+import { OPEN_DRAWER } from '../../ulti/constants';
 const { Search } = Input;
+
 
 export default function ProjectDetail() {
     let projectId = useParams()
@@ -11,6 +14,8 @@ export default function ProjectDetail() {
     useEffect(() => {
         getProjectDetailInfo()
     }, [])
+
+    let dispatch = useDispatch()
 
     let getProjectDetailInfo = () => {
         let token = localStorage.getItem(TOKEN)
@@ -47,7 +52,9 @@ export default function ProjectDetail() {
         if (element.lstTaskDeTail) {
             return element.lstTaskDeTail.map((task) => {
                 console.log(task)
-                return <div>{task.taskName}</div>
+                return <div onClick={() => {
+                    dispatch({ type: OPEN_DRAWER })
+                }}>{task.taskName} jk</div>
             })
         }
     }
