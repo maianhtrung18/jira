@@ -68,7 +68,7 @@ export default function Header() {
                     </div>
                 </div>
                 <button className='btn btn-info'>
-                    {(userInfo) ? userInfo.name : <>
+                    {userInfo ? userInfo.name : <>
                         <NavLink className='userLink' to={'/login'}>Log in</NavLink>
                         {' / '}
                         <NavLink className='userLink' to={'/register'}>Register</NavLink>

@@ -289,8 +289,8 @@ export default function ProjectManager() {
                         }}
                         placeholder="input search text"
                         onSearch={(value, event) => {
-                            console.log(value)
-                            console.log(event)
+                            // console.log(value)
+                            // console.log(event)
                         }}
                         style={{
                             width: 200,

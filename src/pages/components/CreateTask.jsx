@@ -68,7 +68,7 @@ export default function CreateTask() {
     const getStatus = () => {
         let promise = getStatusService();
         promise.then((res) => {
-            console.log(res.data.content);
+            // console.log(res.data.content);
             setStatus(res.data.content);
         })
         promise.catch((err) => {
@@ -84,7 +84,7 @@ export default function CreateTask() {
 
     const getPriority = () => {
         getPriorityService().then((res) => {
-            console.log(res.data.content, "res prio")
+            // console.log(res.data.content, "res prio")
             setPriority(res.data.content)
         })
         getPriorityService().catch((err) => {
@@ -101,7 +101,7 @@ export default function CreateTask() {
     const getProject = () => {
         let promise = getAllProject();
         promise.then((res) => {
-            console.log(res.data.content)
+            // console.log(res.data.content)
             setProject(res.data.content)
         })
         promise.catch((err) => {
@@ -118,7 +118,7 @@ export default function CreateTask() {
     const getTaskType = () => {
         let promise = getTaskTypeService();
         promise.then((res) => {
-            console.log(res.data.content)
+            // console.log(res.data.content)
             setTaskType(res.data.content)
         })
         promise.catch((err) => {

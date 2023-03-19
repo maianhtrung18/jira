@@ -79,3 +79,16 @@
 .userLink:hover {
   color: blue;
 }
+
+/* PROJECT DETAIL */
+.projectDetail_Container {
+  padding: 30px;
+}
+
+.projectDetail_Description::first-letter {
+  text-transform: uppercase;
+}
+
+.taskBoard {
+  background-color: rgba(162, 162, 162, 0.5);
+}
