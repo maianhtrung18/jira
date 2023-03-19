@@ -8,3 +8,4 @@ export const USER = "USER"
 export const EDIT_USER = 'EDIT_USER'
 export const OPEN_DRAWER = 'OPEN_DRAWER'
 export const CLOSE_DRAWER = 'CLOSE_DRAWER'
+export const GET_USERLIST = 'GET_USERLIST'
