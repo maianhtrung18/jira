@@ -47,7 +47,7 @@ export default function ProjectManager() {
     let [users, setUsers] = useState([])
 
     let content = (projectId) => {
-        return <AddUser users={users} projectId={projectId} />
+        return <AddUser users={users} projectId={projectId}/>
     }
 
     let getArrUsers = () => {

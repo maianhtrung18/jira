@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { OPEN_DRAWER } from '../../ulti/constants';
 const { Search } = Input;
 
-
 export default function ProjectDetail() {
     let projectId = useParams()
     let [projectInfo, setProjectInfo] = useState({})
@@ -29,16 +28,13 @@ export default function ProjectDetail() {
             })
     }
 
-
-
-
     let generateTypeOfTasks = () => {
         console.log(projectInfo.lstTask)
         if (projectInfo.lstTask) {
             return projectInfo.lstTask.map((element) => {
-                return <div className='col-3 '>
+                return <div className='col-3 boardContainer'>
                     <div className='taskBoard'>
-                        <h6>{element.statusName}</h6>
+                        <h6 className='taskBoard_Title'>{element.statusName}</h6>
                         {
                             generateTaskDetail(element)
                         }
@@ -48,13 +44,33 @@ export default function ProjectDetail() {
         }
     }
 
+    let generateTaskMember = (assignees) => {
+        return assignees.map((member) => {
+             return <img key={member.id} className='taskAva' src={member.avatar} alt="" />
+        })
+    }
+
     let generateTaskDetail = (element) => {
         if (element.lstTaskDeTail) {
             return element.lstTaskDeTail.map((task) => {
                 console.log(task)
-                return <div onClick={() => {
+                return <div className='taskContainer' onClick={() => {
                     dispatch({ type: OPEN_DRAWER })
-                }}>{task.taskName} jk</div>
+                }}>
+                    <div className='taskContainer_Task' >
+                        <h6 className='taskContainer_TaskTitle'>{task.taskName}</h6>
+                        <div className='taskContainer_TaskInfo'>
+                            <div className='taskPriority'>
+                                <p className='taskPriority_Content'>{task.priorityTask.priority}</p>
+                            </div>
+                            <div className='taskMember'>
+                                {generateTaskMember(task.assigness)}
+                            </div>
+                        </div>
+
+                    </div>
+                
+                </div>
             })
         }
     }
@@ -82,8 +98,6 @@ export default function ProjectDetail() {
                     {generateTypeOfTasks()}
                 </div>
             </div>
-
         </div>
-
     )
 }
