@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getProjectDetail } from '../../services/services'
-import { TOKEN } from '../../ulti/setting'
+import { SEARCH_TASKS, TOKEN } from '../../ulti/setting'
 import { Input, Popover, Space, Table, Tag } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { OPEN_DRAWER } from '../../ulti/constants';
+import { projectDetailAction } from '../../redux/action/projectDetailAction';
 const { Search } = Input;
 
+
 export default function ProjectDetail() {
+
     let projectId = useParams()
-    let [projectInfo, setProjectInfo] = useState({})
+    // let [projectInfo, setProjectInfo] = useState({})
+
+    let projectInfo = useSelector(state => state.projectReducer)
     useEffect(() => {
         getProjectDetailInfo()
     }, [])
@@ -17,21 +22,25 @@ export default function ProjectDetail() {
     let dispatch = useDispatch()
 
     let getProjectDetailInfo = () => {
-        let token = localStorage.getItem(TOKEN)
-        let projectDetail = getProjectDetail(token, projectId.id)
-        projectDetail.then((result) => {
-            console.log(result)
-            setProjectInfo(result.data.content)
-        })
-            .catch((error) => {
-                console.log(error)
-            })
+
+        // let token = localStorage.getItem(TOKEN)
+        // let projectDetail = getProjectDetail(token, projectId.id)
+        // projectDetail.then((result) => {
+        //     console.log(result)
+        //     setProjectInfo(result.data.content)
+        // })
+        //     .catch((error) => {
+        //         console.log(error)
+        //     })
+
+        let action = projectDetailAction(projectId.id)
+        dispatch(action)
+
     }
 
     let generateTypeOfTasks = () => {
-        console.log(projectInfo.lstTask)
-        if (projectInfo.lstTask) {
-            return projectInfo.lstTask.map((element) => {
+        if (projectInfo[1]) {
+            return projectInfo[1].map((element) => {
                 return <div className='col-3 boardContainer'>
                     <div className='taskBoard'>
                         <h6 className='taskBoard_Title'>{element.statusName}</h6>
@@ -46,14 +55,13 @@ export default function ProjectDetail() {
 
     let generateTaskMember = (assignees) => {
         return assignees.map((member) => {
-             return <img key={member.id} className='taskAva' src={member.avatar} alt="" />
+            return <img key={member.id} className='taskAva' src={member.avatar} alt="" />
         })
     }
 
     let generateTaskDetail = (element) => {
         if (element.lstTaskDeTail) {
             return element.lstTaskDeTail.map((task) => {
-                console.log(task)
                 return <div className='taskContainer' onClick={() => {
                     dispatch({ type: OPEN_DRAWER })
                 }}>
@@ -67,9 +75,7 @@ export default function ProjectDetail() {
                                 {generateTaskMember(task.assigness)}
                             </div>
                         </div>
-
                     </div>
-                
                 </div>
             })
         }
@@ -78,12 +84,19 @@ export default function ProjectDetail() {
     return (
         <div className='projectDetail'>
             <div className='projectDetail_Container'>
-                <h3 className='projectDetail_Title'>{projectInfo.projectName}</h3>
-                <div className='projectDetail_Description'>{projectInfo.description ? projectInfo.description.replace(/<\/?[^>]+(>|$)/g, "") : ''}</div>
+                <h3 className='projectDetail_Title'>{projectInfo[0].projectName ? projectInfo[0].projectName : ''}</h3>
+                <div className='projectDetail_Description'>{projectInfo[0].description ? projectInfo[0].description.replace(/<\/?[^>]+(>|$)/g, "") : ''}</div>
                 <div>
                     <Space className='searchInput' direction="vertical">
                         <Search
-                            onChange={''}
+                            onChange={(event)=> {
+                                console.log(event.target.value)
+                                // console.log(projectInfo)
+                                dispatch({
+                                    type: SEARCH_TASKS,
+                                    data: event.target.value
+                                })
+                            }}
                             placeholder="input search text"
                             onSearch={(value, event) => {
                             }}

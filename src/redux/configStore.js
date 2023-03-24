@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import { createTaskReducer } from "./reducers/createTaskReducer";
 import { EditUserReducer } from "./reducers/EditUserReducer";
 import { loginReducer } from "./reducers/loginReducer";
+import { projectReducer } from "./reducers/projectDetailReducer";
 import { ProjectManagementReducer } from "./reducers/ProjectManagementReducer";
 import { UserJiraReducer } from "./reducers/UserJiraReducer";
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     UserJiraReducer,
     EditUserReducer,
     createTaskReducer,
-    ProjectManagementReducer
+    ProjectManagementReducer,
+    projectReducer
     
 })
 

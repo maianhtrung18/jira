@@ -1,8 +1,6 @@
 import { getAllProject } from "../../services/services"
 import { GET_PROJECT } from "../../ulti/setting"
 
-
-
 export const projectManagerAction = () => {
 
     return (dispatch2) => {

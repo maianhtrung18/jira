@@ -40,7 +40,6 @@
 
 .memberList {
   position: relative;
-  /* z-index: -1; */
   display: inline-block;
 }
 
@@ -82,6 +81,11 @@
 }
 
 /* PROJECT DETAIL */
+
+.projectDetail_Title {
+  text-transform: capitalize;
+}
+
 .projectDetail_Container {
   padding: 30px;
 }
