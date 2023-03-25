@@ -10,7 +10,6 @@ export const projectReducer = (state = initialState, action) => {
                     return task.taskName.toLowerCase().match(action.data.toLowerCase())
                 })
                 ele = {...ele, lstTaskDeTail: [...tasks]}
-                console.log(ele)
                 return { ...ele }
             })
             return [{...state[0]}, [...listTask], action.data]
@@ -29,7 +28,6 @@ export const projectReducer = (state = initialState, action) => {
             else {
                 return { ...state }
             }
-
 
         default:
             return state

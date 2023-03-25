@@ -22,15 +22,12 @@ export default function Register() {
             phoneNumber: Yup.string().required('Phone không được để trống')
         }),
         onSubmit: values => {
-            console.log(values)
             let register = signUp(values)
             register.then((result) => {
-                console.log(result)
                 alert(result.data.message)
                 history.push('/login')
                 history.go(0)
             }).catch((error) => {
-                console.log(error)
                 alert(error.response.data.message)
             })
         },

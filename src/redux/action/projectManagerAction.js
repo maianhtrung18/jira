@@ -19,8 +19,6 @@ export const projectManagerAction = () => {
                 }
             })
 
-            // console.log(projectArr)
-
             let action = {
                 type: GET_PROJECT,
                 data: projectArr

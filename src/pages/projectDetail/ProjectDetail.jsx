@@ -22,17 +22,6 @@ export default function ProjectDetail() {
     let dispatch = useDispatch()
 
     let getProjectDetailInfo = () => {
-
-        // let token = localStorage.getItem(TOKEN)
-        // let projectDetail = getProjectDetail(token, projectId.id)
-        // projectDetail.then((result) => {
-        //     console.log(result)
-        //     setProjectInfo(result.data.content)
-        // })
-        //     .catch((error) => {
-        //         console.log(error)
-        //     })
-
         let action = projectDetailAction(projectId.id)
         dispatch(action)
 
@@ -90,8 +79,6 @@ export default function ProjectDetail() {
                     <Space className='searchInput' direction="vertical">
                         <Search
                             onChange={(event)=> {
-                                console.log(event.target.value)
-                                // console.log(projectInfo)
                                 dispatch({
                                     type: SEARCH_TASKS,
                                     data: event.target.value
