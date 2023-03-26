@@ -9,8 +9,9 @@ import JoditEditor from 'jodit-react';
 import { createTaskService, getPriorityService, getStatusService, getTaskTypeService, getUserByProject } from '../../services/createTaskService';
 import { getAllProject } from '../../services/services';
 import * as Yup from 'yup';
+import { notifiFunction } from '../../ulti/notification';
 
-export default function CreateTask() {
+export default  function CreateTask() {
     let [status, setStatus] = useState([])
     let [priority, setPriority] = useState([])
     let [taskType, setTaskType] = useState([])
@@ -53,9 +54,11 @@ export default function CreateTask() {
             let promise = createTaskService(values);
             promise.then((res) => {
                 console.log(res,"create task")
+                notifiFunction('success',"Create task successful !")
             })
             promise.catch((err) => {
-                console.log(err, "err task")
+                console.log(err, "err task");
+                notifiFunction('error',err.response.data.content)
             })
         },
     });
@@ -75,7 +78,7 @@ export default function CreateTask() {
             console.log(err)
         })
     }
-
+    
     const renderStatus = () => {
         return status.map((stt) => {
             return <option key={stt.statusId} value={stt.statusId}>{stt.statusName}</option>
@@ -281,7 +284,7 @@ export default function CreateTask() {
                             <div className='text-danger'>{formik.errors.description}</div>
                         ) : null}
                     </div>
-
+                        {/* <button onClick={() => openNotificationWithIcon('success')}></button> */}
                 </form>
 
 

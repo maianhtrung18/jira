@@ -5,9 +5,8 @@ import { EditUserReducer } from "./reducers/EditUserReducer";
 import { loginReducer } from "./reducers/loginReducer";
 import { projectReducer } from "./reducers/projectDetailReducer";
 import { ProjectManagementReducer } from "./reducers/ProjectManagementReducer";
+import { taskReducer } from "./reducers/taskReducer";
 import { UserJiraReducer } from "./reducers/UserJiraReducer";
-
-
 
 
 const rootReducer = combineReducers({
@@ -16,6 +15,7 @@ const rootReducer = combineReducers({
     EditUserReducer,
     createTaskReducer,
     ProjectManagementReducer,
+    taskReducer, 
     projectReducer
     
 })

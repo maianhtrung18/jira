@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Space, Table, Tag, Button, Form, Input, Modal, } from 'antd';
 import axios from 'axios';
 import { ACCESS_TOKEN, EDIT_USER, TOKEN_CYBER, URL_API } from '../../ulti/constants';
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DeleteUser } from '../../services/UserService';
 import FormEditUser from './EditUser';
 import { TOKEN } from '../../ulti/setting';
+import { SearchOutlined } from '@ant-design/icons';
 
 export default function User() {
   let [userList, setUserList] = useState([]);
@@ -20,11 +21,80 @@ export default function User() {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
 
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1890ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+  })
 
   const handleChange = (pagination, filters, sorter, selectedKeys, confirm) => {
     //console.log('Various parameters', pagination, filters, sorter);
     setFilteredInfo(filters);
     setSortedInfo(sorter);
+  };
+  const clearAll = () => {
+    setFilteredInfo({});
+    setSortedInfo({});
+    setSearchText('');
   };
   const columns = [
     {
@@ -43,13 +113,16 @@ export default function User() {
           return 1;
         }
         else return -1
-      }
+      },
+      sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
+      ...getColumnSearchProps('name')
     },
     {
       title: 'UserID',
       dataIndex: 'id',
       key: 'id',
-      sorter: (a, b) => a.id - b.id
+      sorter: (a, b) => a.id - b.id,
+      sortOrder: sortedInfo.columnKey === 'id' ? sortedInfo.order : null,
     },
     {
       title: 'Email',
@@ -86,7 +159,7 @@ export default function User() {
           }>
             <EditOutlined />
           </button>
-         
+
           <button className='btn' style={{ color: 'red' }} onClick={() => {
             console.log(record.id, 'record id');
             let deleteUser = DeleteUser(record.id);
@@ -139,9 +212,11 @@ export default function User() {
   }
 
   return (
+
     <div className='container mt-4'>
-      <FormEditUser getUserList={getUserList}/>
-      <Table columns={columns} dataSource={userList} />
+      <FormEditUser getUserList={getUserList} />
+      <Button onClick={clearAll}>Clear filters and sorters</Button>
+      <Table columns={columns} dataSource={userList} onChange={handleChange} />
     </div>
   )
 }
