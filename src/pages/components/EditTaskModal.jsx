@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import React from 'react'
 import { Collapse, Radio, Select, Space, Input, Slider } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTaskService, getPriorityService, getStatusService, getTaskTypeService, getUserByProject } from '../../services/createTaskService';
+import { getTaskDetailAction } from '../../redux/action/editTaskAction';
 
 
 export default function EditTaskModal() {
@@ -11,7 +12,7 @@ export default function EditTaskModal() {
   let [status, setStatus] = useState([])
   let [priority, setPriority] = useState([])
   let [taskType, setTaskType] = useState([])
-
+  let dispatch = useDispatch();
   useEffect(() => {
     getStatus();
     getPriority();
@@ -50,14 +51,12 @@ export default function EditTaskModal() {
     })
   }
 
+ 
   let taskDetail = useSelector(state => state.taskReducer.taskDetail)
   return (
     <div>
 
       <div>
-        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#taskModal">
-          Launch demo modal
-        </button>
         <div className="modal fade" id="taskModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ height: 'auto' }}>
           <div className="modal-dialog modal-xl">
             <div className="modal-content">
@@ -110,7 +109,7 @@ export default function EditTaskModal() {
                       <select className="form-control" name id>
                         {
                           status.map((stt) => {
-                            if (stt.statusId === taskDetail.priorityId) {
+                            if (stt.statusId === taskDetail.statusId) {
                               return <option key={stt.statusId} value={stt.statusId} selected>{stt.statusName}</option>
                             }
                             else {
@@ -132,12 +131,16 @@ export default function EditTaskModal() {
                               mode="multiple"
 
                               placeholder="Choose Assignee"
-                              defaultValue={['a10', 'c12']}
-
+ 
                               style={{
                                 width: '100%',
                               }}
-                              options={options}
+                              options={
+                                taskDetail.assigness.map((ass) => {
+                                  return {value:ass.id,label:ass.name}
+                                })
+
+                              }
                             />
                           </div>
                         </div>

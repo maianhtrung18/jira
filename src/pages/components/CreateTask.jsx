@@ -31,6 +31,8 @@ export default  function CreateTask() {
     const onClose = () => {
         dispatch({ type: CLOSE_DRAWER });
     };
+
+    //const [projectList, setProjectList] = useState([]);
     const formik = useFormik({
         initialValues: {
             listUserAsign: [],
