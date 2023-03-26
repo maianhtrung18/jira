@@ -1,14 +1,16 @@
+import { GET_TASK_DETAIL } from "../../ulti/constants"
+
 const initialState = {
     taskDetail: {
         "priorityTask": {
-            "priorityId": 2,
-            "priority": "Medium"
+            "priorityId": "",
+            "priority": ""
         },
         "taskTypeDetail": {
-            "id": 2,
-            "taskType": "new task"
+            "id": "",
+            "taskType": ""
         },
-        "assigness": ['a','b','c'],
+        "assigness": [],
         "lstComment": [
             {
                 "id": 8159,
@@ -18,25 +20,26 @@ const initialState = {
                 "commentContent": "<p>abc</p>"
             }
         ],
-        "taskId": 9393,
-        "taskName": "fix lỗi",
-        "alias": "fix-loi",
+        "taskId": "",
+        "taskName": "",
+        "alias": "",
         "description": "<p>fghfhfh</p>",
-        "statusId": "1",
+        "statusId": "",
         "originalEstimate": 0,
         "timeTrackingSpent": 0,
         "timeTrackingRemaining": 0,
-        "typeId": 0,
-        "priorityId": 0,
-        "projectId": 12017
+        "typeId": "",
+        "priorityId": "",
+        "projectId": ""
     }
 }
 
 
 export const taskReducer = (state = initialState, action) => {
     switch (action.type) {
-
-
+        case GET_TASK_DETAIL:
+            state.taskDetail = action.data
+            return {...state}
         default:
             return state
     }
