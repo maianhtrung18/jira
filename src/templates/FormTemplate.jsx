@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 import { history } from '../App'
 
 export default function FormTemplate(props) {
+    
     return (
         <Route exact path={props.path} render={(propsRoute) => {
             return <>

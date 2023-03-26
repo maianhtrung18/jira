@@ -11,8 +11,6 @@ import { projectManagerAction } from '../../redux/action/projectManagerAction';
 import { NavLink } from 'react-router-dom';
 const { Search } = Input;
 
-
-
 export default function ProjectManager() {
 
     let nullInfo = {
@@ -141,7 +139,6 @@ export default function ProjectManager() {
                                     );
                                 })}
                                 <div className='members'>
-                                    {/* {console.log(members)} */}
                                     <MembersListProject member={members} />
                                 </div>
                             </div>
@@ -289,8 +286,6 @@ export default function ProjectManager() {
                         }}
                         placeholder="input search text"
                         onSearch={(value, event) => {
-                            // console.log(value)
-                            // console.log(event)
                         }}
                         style={{
                             width: 200,
