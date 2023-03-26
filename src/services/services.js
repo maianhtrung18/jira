@@ -134,3 +134,18 @@ export const assignUserProject = (token, data) => {
         data: data
     });
 }
+
+export const getProjectDetail = (token, id) => {
+      return axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_DOMAIN}/api/Project/getProjectDetail`,
+        params:{
+            id,
+        },
+        headers: {
+            TokenCybersoft: studentToken,
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+}

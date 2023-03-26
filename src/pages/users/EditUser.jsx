@@ -18,9 +18,7 @@ export default function FormEditUser(props){
         phoneNumber: "",
         passConfirm: "",
     });
-    console.log(userInfo, "userInfo")
     const handleChange = (event) => {
-        //console.log(event.target.value)
         userInfo = {...userInfo,[event.target.name]:event.target.value}
         let action = {
             type: EDIT_USER,
@@ -28,7 +26,6 @@ export default function FormEditUser(props){
         }
         dispatch(action)
         setUserInfo(userInfo);
-        console.log(userInfo,'onChange')
     }
     
     const handleSubmit = () => {
@@ -43,7 +40,6 @@ export default function FormEditUser(props){
         }
         for (const key in userInfo) {
             let value = userInfo[key];
-            //console.log(typeof(value))
             if (value === "") {
                 useErr[key] = `${key} không được để trống`
             }
@@ -53,7 +49,6 @@ export default function FormEditUser(props){
         }
         useErr = {...useErr};
         setUserErr(useErr);
-        console.log(useErr)
         for (const key in useErr) {
             if (useErr[key] !== "") {
                 kt = false;

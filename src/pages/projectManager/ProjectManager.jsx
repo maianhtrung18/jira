@@ -47,7 +47,7 @@ export default function ProjectManager() {
     let [users, setUsers] = useState([])
 
     let content = (projectId) => {
-        return <AddUser users={users} projectId={projectId} />
+        return <AddUser users={users} projectId={projectId}/>
     }
 
     let getArrUsers = () => {
@@ -289,8 +289,8 @@ export default function ProjectManager() {
                         }}
                         placeholder="input search text"
                         onSearch={(value, event) => {
-                            console.log(value)
-                            console.log(event)
+                            // console.log(value)
+                            // console.log(event)
                         }}
                         style={{
                             width: 200,

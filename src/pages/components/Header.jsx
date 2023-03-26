@@ -2,22 +2,12 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { OPEN_DRAWER } from '../../ulti/constants'
-import { USER_INFO } from '../../ulti/setting'
+import { LOGOUT, USER_INFO } from '../../ulti/setting'
 
 export default function Header() {
     let userInfo = useSelector(state => state.loginReducer)
     let dispatch = useDispatch()
-    // console.log(userInfo)
 
-    // if (userInfo === null){
-    //     console.log('null')
-    // }
-    // else{
-    //     console.log('khong null')
-    //      console.log(userInfo.email)
-    // }
-    //let user = localStorage.getItem(JSON.stringify(USER_INFO));
-    // console.log(userInfo.name)
     return (
         <div className='d-flex justify-content-between align-items-center headerJira'>
             <nav className="navbar navbar-expand-lg navbar-light">
@@ -36,7 +26,7 @@ export default function Header() {
                             </a>
                             <div className="dropdown-menu">
                                 <NavLink className="dropdown-item" to="/home">View all Projects</NavLink>
-                                <a className="dropdown-item" href="#">Create Project</a>
+                                {/* <a className="dropdown-item" href="#">Create Project</a> */}
                             </div>
                         </li>
                         <li className="nav-item dropdown">
@@ -62,13 +52,17 @@ export default function Header() {
                         <i className="fa-solid fa-gear"></i>
                     </button>
                     <div className="dropdown-menu">
-                        <a className="dropdown-item" href="#">Action</a>
-                        <a className="dropdown-item" href="#">Another action</a>
-                        <a className="dropdown-item" href="#">Something else here</a>
+                        <NavLink className="dropdown-item" to="#" onClick={() => {
+                            dispatch({
+                                type: LOGOUT
+                            })
+                        }}> Log out</NavLink>
+                        {/* <a className="dropdown-item" href="#">Another action</a>
+                        <a className="dropdown-item" href="#">Something else here</a> */}
                     </div>
                 </div>
                 <button className='btn btn-info'>
-                    {(userInfo) ? userInfo.name : <>
+                    {userInfo ? userInfo.name : <>
                         <NavLink className='userLink' to={'/login'}>Log in</NavLink>
                         {' / '}
                         <NavLink className='userLink' to={'/register'}>Register</NavLink>

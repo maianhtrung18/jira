@@ -1,8 +1,6 @@
 import { getAllProject } from "../../services/services"
 import { GET_PROJECT } from "../../ulti/setting"
 
-
-
 export const projectManagerAction = () => {
 
     return (dispatch2) => {
@@ -20,8 +18,6 @@ export const projectManagerAction = () => {
                     tags: [project.members, project.id]
                 }
             })
-
-            // console.log(projectArr)
 
             let action = {
                 type: GET_PROJECT,
