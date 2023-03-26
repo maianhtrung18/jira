@@ -11,7 +11,7 @@ import { getAllProject } from '../../services/services';
 import * as Yup from 'yup';
 import { notifiFunction } from '../../ulti/notification';
 
-export default function CreateTask() {
+export default  function CreateTask() {
     let [status, setStatus] = useState([])
     let [priority, setPriority] = useState([])
     let [taskType, setTaskType] = useState([])
@@ -58,7 +58,7 @@ export default function CreateTask() {
             })
             promise.catch((err) => {
                 console.log(err, "err task");
-                notifiFunction('error',"Create task failed !")
+                notifiFunction('error',err.response.data.content)
             })
         },
     });
@@ -78,7 +78,7 @@ export default function CreateTask() {
             console.log(err)
         })
     }
-
+    
     const renderStatus = () => {
         return status.map((stt) => {
             return <option key={stt.statusId} value={stt.statusId}>{stt.statusName}</option>
