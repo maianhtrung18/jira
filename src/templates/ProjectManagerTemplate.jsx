@@ -7,7 +7,6 @@ import Header from '../pages/components/Header'
 
 export default function ProjectManagerTemplate(props) {
     let userInfo = useSelector(state => state.loginReducer)
-    // console.log(userInfo)
     if(userInfo === null) {
         history.push('/login')
     }

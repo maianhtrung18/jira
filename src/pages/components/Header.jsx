@@ -57,8 +57,6 @@ export default function Header() {
                                 type: LOGOUT
                             })
                         }}> Log out</NavLink>
-                        {/* <a className="dropdown-item" href="#">Another action</a>
-                        <a className="dropdown-item" href="#">Something else here</a> */}
                     </div>
                 </div>
                 <button className='btn btn-info'>

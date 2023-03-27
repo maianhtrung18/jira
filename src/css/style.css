@@ -94,6 +94,11 @@
   text-transform: uppercase;
 }
 
+.projectDetail_SearchBar {
+  display: flex;
+  align-items: center;
+}
+
 .boardContainer {
   height: inherit;
 }
@@ -134,4 +139,13 @@
 
 .taskMember img {
   padding: 0px 1px;
+}
+
+.projectDetail_SearchBarAva {
+  margin-left: 20px;
+}
+
+.projectDetail_SearchBarAva img {
+  width: 30px;
+  border-radius: 50%;
 }

@@ -10,11 +10,9 @@ import EditTaskModal from '../components/EditTaskModal';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
 const { Search } = Input;
 
-
 export default function ProjectDetail() {
 
     let projectId = useParams()
-    // let [projectInfo, setProjectInfo] = useState({})
 
     let projectInfo = useSelector(state => state.projectReducer)
     useEffect(() => {
@@ -26,15 +24,14 @@ export default function ProjectDetail() {
     let getProjectDetailInfo = () => {
         let action = projectDetailAction(projectId.id)
         dispatch(action)
-
     }
 
     let dispatch1 = useDispatch();
     const getTaskDetail = (id) => {
         let action = getTaskDetailAction(id)
         dispatch1(action)
-      }
-    
+    }
+
     let generateTypeOfTasks = () => {
         if (projectInfo[1]) {
             return projectInfo[1].map((element) => {
@@ -61,8 +58,6 @@ export default function ProjectDetail() {
             return element.lstTaskDeTail.map((task) => {
                 return <div className='taskContainer' data-toggle="modal" data-target="#taskModal" onClick={() => {
                     getTaskDetail(task.taskId);
-                    console.log(task,"task")
-                    
                 }}>
                     <div className='taskContainer_Task' >
                         <h6 className='taskContainer_TaskTitle'>{task.taskName}</h6>
@@ -80,17 +75,22 @@ export default function ProjectDetail() {
         }
     }
 
-    
+    let generateAva = (member) => {
+        return member.map((mem) => {
+            return <img key={mem.userId} src={mem.avatar} className='projectDetailAva' alt=''></img>
+        })
+    }
+
     return (
         <div className='projectDetail'>
-            <EditTaskModal/>
-            <div className='projectDetail_Container'>
+            <EditTaskModal />
+            <div className='projectDetail_Container'>  
                 <h3 className='projectDetail_Title'>{projectInfo[0].projectName ? projectInfo[0].projectName : ''}</h3>
                 <div className='projectDetail_Description'>{projectInfo[0].description ? projectInfo[0].description.replace(/<\/?[^>]+(>|$)/g, "") : ''}</div>
-                <div>
+                <div className='projectDetail_SearchBar'>
                     <Space className='searchInput' direction="vertical">
                         <Search
-                            onChange={(event)=> {
+                            onChange={(event) => {
                                 dispatch({
                                     type: SEARCH_TASKS,
                                     data: event.target.value
@@ -104,6 +104,9 @@ export default function ProjectDetail() {
                             }}
                         />
                     </Space>
+                    <div className='projectDetail_SearchBarAva'>
+                        {generateAva(projectInfo[0].members)}
+                    </div>
                 </div>
 
                 <div className='ProjectDetail_Tasks row'>
