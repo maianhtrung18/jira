@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProjectDetail } from '../../services/services'
-import { SEARCH_TASKS, TOKEN } from '../../ulti/setting'
-import { Input, Popover, Space, Table, Tag } from 'antd';
+import { SEARCH_TASKS } from '../../ulti/setting'
+import { Input, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { OPEN_DRAWER } from '../../ulti/constants';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import EditTaskModal from '../components/EditTaskModal';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';

@@ -235,7 +235,6 @@ export default function ProjectManager() {
                     }}>Create Project</button>
                 </div>
                 <Space className='searchInput' direction="vertical">
-                    {/* {takeProject()} */}
                     <Search
                         onChange={(event) => {
                             let action = {

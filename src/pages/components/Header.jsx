@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { OPEN_DRAWER } from '../../ulti/constants'
-import { LOGOUT, USER_INFO } from '../../ulti/setting'
+import { LOGOUT } from '../../ulti/setting'
 
 export default function Header() {
     let userInfo = useSelector(state => state.loginReducer)
