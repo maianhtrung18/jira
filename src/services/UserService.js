@@ -23,3 +23,14 @@ export const EditUser = (userEdit) => {
         }
     })
 }
+
+export const getUserByProject = (id) => {
+    return axios({
+        method: 'GET',
+        url: `${URL_API}/Users/getUserByProjectId?idProject=${id}`,
+        headers:{
+            'TokenCybersoft': TOKEN_CYBER,
+            'Authorization': `Bearer ${localStorage.getItem(TOKEN)}`,
+        }
+    })
+}
