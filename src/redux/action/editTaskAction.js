@@ -1,4 +1,4 @@
-import { getTaskDetailService } from "../../services/editTaskService"
+import { getTaskDetailService, updateDesService } from "../../services/editTaskService"
 import { GET_TASK_DETAIL } from "../../ulti/constants";
 
 

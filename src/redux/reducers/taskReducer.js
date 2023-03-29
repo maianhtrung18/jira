@@ -1,4 +1,4 @@
-import { GET_TASK_DETAIL } from "../../ulti/constants"
+import { GET_TASK_DETAIL, GET_USER_BYPROJECT, UPDATE_DESC, UPDATE_TASKNAME } from "../../ulti/constants"
 
 const initialState = {
     taskDetail: {
@@ -21,7 +21,7 @@ const initialState = {
             }
         ],
         "taskId": "",
-        "taskName": "",
+        "taskName": "123",
         "alias": "",
         "description": "<p>fghfhfh</p>",
         "statusId": "",
@@ -31,7 +31,17 @@ const initialState = {
         "typeId": "",
         "priorityId": "",
         "projectId": ""
-    }
+    },
+    userList: [
+        {
+            "userId": "",
+            "name": "",
+            "avatar": "",
+            "email":"",
+            "phoneNumber":""
+          },
+    ],
+    desc: ""
 }
 
 
@@ -39,6 +49,17 @@ export const taskReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_TASK_DETAIL:
             state.taskDetail = action.data
+            return {...state}
+        case GET_USER_BYPROJECT:
+            state.userList = action.data
+            state.userList = [...state.userList]
+            return {...state}
+        case UPDATE_TASKNAME:
+            state.taskDetail.taskName = action.data
+            state.taskDetail = {...state.taskDetail}
+            return {...state}
+        case UPDATE_DESC:
+            state.desc = action.data
             return {...state}
         default:
             return state

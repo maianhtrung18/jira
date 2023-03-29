@@ -1,7 +1,9 @@
+import { notification } from 'antd'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { projectManagerAction } from '../../redux/action/projectManagerAction'
 import { assignUserProject } from '../../services/services'
+import { notifiFunction } from '../../ulti/notification'
 import { TOKEN } from '../../ulti/setting'
 
 
@@ -28,10 +30,12 @@ export default function AddUser(props) {
                 let assignUser = assignUserProject(token, data)
                 assignUser.then(() => {
                     console.log('Add thanh cong')
+                    notifiFunction("success", "Add succcess")
                     reRender()
+                    
                 })
                     .catch((error) => {
-                        alert(error.response.data.message)
+                        notifiFunction("error",`${error.response.data.message}`)
                     })
             }}>
                 <td>{user.userId}</td>
