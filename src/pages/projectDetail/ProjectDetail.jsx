@@ -29,8 +29,8 @@ export default function ProjectDetail() {
     const getTaskDetail = (id) => {
         let action = getTaskDetailAction(id)
         dispatch1(action)
-      }
-    
+    }
+
     let generateTypeOfTasks = () => {
         if (projectInfo[1]) {
             return projectInfo[1].map((element) => {
@@ -57,8 +57,8 @@ export default function ProjectDetail() {
             return element.lstTaskDeTail.map((task) => {
                 return <div className='taskContainer' data-toggle="modal" data-target="#taskModal" onClick={() => {
                     getTaskDetail(task.taskId);
-                    console.log(task,"task")
-                    
+                    console.log(task, "task")
+
                 }}>
                     <div className='taskContainer_Task' >
                         <h6 className='taskContainer_TaskTitle'>{task.taskName}</h6>
@@ -77,9 +77,14 @@ export default function ProjectDetail() {
     }
 
     let generateAva = (member) => {
-        return member.map((mem) => {
-            return <img key={mem.userId} src={mem.avatar} className='projectDetailAva' alt=''></img>
-        })
+        if (member) {
+            return member.map((mem) => {
+                return <img key={mem.userId} src={mem.avatar} className='projectDetailAva' alt=''></img>
+            })
+        }
+        else{
+            return ''
+        }
     }
 
     return (
@@ -105,6 +110,7 @@ export default function ProjectDetail() {
                             }}
                         />
                     </Space>
+                    {console.log(projectInfo)}
                     <div className='projectDetail_SearchBarAva'>
                         {generateAva(projectInfo[0].members)}
                     </div>

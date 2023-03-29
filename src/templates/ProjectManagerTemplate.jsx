@@ -12,7 +12,6 @@ export default function ProjectManagerTemplate(props) {
     }
     return (
         <Route exact path={props.path} render={(propsRoute) => {
-
             return <div>
                     <Header/>
                     <props.component {...propsRoute} />
