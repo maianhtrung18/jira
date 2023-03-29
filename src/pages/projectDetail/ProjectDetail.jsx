@@ -89,7 +89,7 @@ export default function ProjectDetail() {
 
     return (
         <div className='projectDetail'>
-            <EditTaskModal />
+            <EditTaskModal getTaskDetail={getTaskDetail}/>
             <div className='projectDetail_Container'>
                 <h3 className='projectDetail_Title'>{projectInfo[0].projectName ? projectInfo[0].projectName : ''}</h3>
                 <div className='projectDetail_Description'>{projectInfo[0].description ? projectInfo[0].description.replace(/<\/?[^>]+(>|$)/g, "") : ''}</div>

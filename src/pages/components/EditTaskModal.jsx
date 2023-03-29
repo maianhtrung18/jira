@@ -89,7 +89,7 @@ export default function EditTaskModal(props) {
     })
     stt.catch((err) => {
       console.log(err)
-      getTaskDetail(task);
+      //getTaskDetail(task);
       notifiFunction("error",`${err.response.data.content}`)
     })
   }
