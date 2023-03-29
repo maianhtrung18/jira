@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Form, Input, Modal, Radio } from 'antd';
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { EDIT_USER } from '../../ulti/constants';
 import { EditUser } from '../../services/UserService';
-
-
 
 export default function FormEditUser(props){
     let [userInfo, setUserInfo] = useState({})

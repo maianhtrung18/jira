@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProjectDetail } from '../../services/services'
-import { SEARCH_TASKS, TOKEN } from '../../ulti/setting'
-import { Input, Popover, Space, Table, Tag } from 'antd';
+import { SEARCH_TASKS } from '../../ulti/setting'
+import { Input, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { OPEN_DRAWER } from '../../ulti/constants';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import EditTaskModal from '../components/EditTaskModal';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
 import { getUserByProjectAction } from '../../redux/action/userAction';
 const { Search } = Input;
 
-
 export default function ProjectDetail() {
 
     let projectId = useParams()
-    // let [projectInfo, setProjectInfo] = useState({})
 
     let projectInfo = useSelector(state => state.projectReducer)
     useEffect(() => {
@@ -27,7 +23,6 @@ export default function ProjectDetail() {
     let getProjectDetailInfo = () => {
         let action = projectDetailAction(projectId.id)
         dispatch(action)
-
     }
 
     let dispatch1 = useDispatch();
@@ -36,12 +31,6 @@ export default function ProjectDetail() {
         dispatch1(action)
       }
     
-    let dispatchUser = useDispatch();
-    const getUserList = (idProj) => {
-        let action = getUserByProjectAction(idProj);
-        dispatchUser(action)
-    }
-
     let generateTypeOfTasks = () => {
         if (projectInfo[1]) {
             return projectInfo[1].map((element) => {
@@ -68,7 +57,6 @@ export default function ProjectDetail() {
             return element.lstTaskDeTail.map((task) => {
                 return <div className='taskContainer' data-toggle="modal" data-target="#taskModal" onClick={() => {
                     getTaskDetail(task.taskId);
-                    getUserList(task.projectId);
                     console.log(task,"task")
                     
                 }}>
@@ -88,17 +76,22 @@ export default function ProjectDetail() {
         }
     }
 
-    
+    let generateAva = (member) => {
+        return member.map((mem) => {
+            return <img key={mem.userId} src={mem.avatar} className='projectDetailAva' alt=''></img>
+        })
+    }
+
     return (
         <div className='projectDetail'>
-            <EditTaskModal getTaskDetail={getTaskDetail}/>
+            <EditTaskModal/>
             <div className='projectDetail_Container'>
                 <h3 className='projectDetail_Title'>{projectInfo[0].projectName ? projectInfo[0].projectName : ''}</h3>
                 <div className='projectDetail_Description'>{projectInfo[0].description ? projectInfo[0].description.replace(/<\/?[^>]+(>|$)/g, "") : ''}</div>
-                <div>
+                <div className='projectDetail_SearchBar'>
                     <Space className='searchInput' direction="vertical">
                         <Search
-                            onChange={(event)=> {
+                            onChange={(event) => {
                                 dispatch({
                                     type: SEARCH_TASKS,
                                     data: event.target.value
@@ -112,6 +105,9 @@ export default function ProjectDetail() {
                             }}
                         />
                     </Space>
+                    <div className='projectDetail_SearchBarAva'>
+                        {generateAva(projectInfo[0].members)}
+                    </div>
                 </div>
 
                 <div className='ProjectDetail_Tasks row'>

@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { OPEN_DRAWER } from '../../ulti/constants'
-import { LOGOUT, USER_INFO } from '../../ulti/setting'
+import { LOGOUT } from '../../ulti/setting'
 
 export default function Header() {
     let userInfo = useSelector(state => state.loginReducer)
@@ -57,8 +57,6 @@ export default function Header() {
                                 type: LOGOUT
                             })
                         }}> Log out</NavLink>
-                        {/* <a className="dropdown-item" href="#">Another action</a>
-                        <a className="dropdown-item" href="#">Something else here</a> */}
                     </div>
                 </div>
                 <button className='btn btn-info'>

@@ -189,46 +189,6 @@ export default function ProjectManager() {
         },
     ];
 
-    // const data = [
-    //     {
-    //         "key": "0",
-    //         "id": "11896",
-    //         "name": [
-    //             "project A",'1234'
-    //         ],
-    //         "categoryName": "Dự án web",
-    //         "creator": "asean",
-    //         "tags": [
-    //             [],
-    //             11896
-    //         ]
-    //     },{
-    //         "key": "0",
-    //         "id": "11896",
-    //         "name": [
-    //             "project A", '123'
-    //         ],
-    //         "categoryName": "Dự án phan mem",
-    //         "creator": "asean",
-    //         "tags": [
-    //             [],
-    //             11896
-    //         ]
-    //     },{
-    //         "key": "0",
-    //         "id": "11896",
-    //         "name": [
-    //             "project A"
-    //         ],
-    //         "categoryName": "Dự án di dong",
-    //         "creator": "asean",
-    //         "tags": [
-    //             [],
-    //             11896
-    //         ]
-    //     }
-    // ];
-
     let handleSubmit = (e) => {
         e.preventDefault()
         let data = {
@@ -275,7 +235,6 @@ export default function ProjectManager() {
                     }}>Create Project</button>
                 </div>
                 <Space className='searchInput' direction="vertical">
-                    {/* {takeProject()} */}
                     <Search
                         onChange={(event) => {
                             let action = {
