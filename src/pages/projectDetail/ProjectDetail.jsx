@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import EditTaskModal from '../components/EditTaskModal';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
-import { getUserByProjectAction } from '../../redux/action/userAction';
+import {getUserByProjectAction} from '../../redux/action/userAction'
 const { Search } = Input;
 
 export default function ProjectDetail() {
@@ -39,7 +39,7 @@ export default function ProjectDetail() {
     let generateTypeOfTasks = () => {
         if (projectInfo[1]) {
             return projectInfo[1].map((element) => {
-                return <div className='col-3 boardContainer'>
+                return <div className='col-12 col-md-6 col-xl-3 boardContainer'>
                     <div className='taskBoard'>
                         <h6 className='taskBoard_Title'>{element.statusName}</h6>
                         {
@@ -95,7 +95,7 @@ export default function ProjectDetail() {
 
     
     return (
-        <div className='projectDetail'>
+        <div className='projectDetail'> {console.log(projectInfo[0])}
             <EditTaskModal getTaskDetail={getTaskDetail}/>
             <div className='projectDetail_Container'>
                 <h3 className='projectDetail_Title'>{projectInfo[0].projectName ? projectInfo[0].projectName : ''}</h3>
@@ -117,7 +117,6 @@ export default function ProjectDetail() {
                             }}
                         />
                     </Space>
-                    {console.log(projectInfo)}
                     <div className='projectDetail_SearchBarAva'>
                         {generateAva(projectInfo[0].members)}
                     </div>
