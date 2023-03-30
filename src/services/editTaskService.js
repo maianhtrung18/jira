@@ -57,3 +57,18 @@ export const updateDesService = (task, des) => {
         }
     })
 }
+
+export const updateEstimateService = (task, hour) => {
+    return axios({
+        method: 'PUT',
+        url: `${URL_API}/Project/updateEstimate`,
+        data: {
+            taskId: task,
+            originalEstimate: hour
+        },
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem(TOKEN)}`,
+            'TokenCybersoft': TOKEN_CYBER
+        }
+    })
+}

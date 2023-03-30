@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import EditTaskModal from '../components/EditTaskModal';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
+import {getUserByProjectAction} from '../../redux/action/userAction'
 const { Search } = Input;
 
 export default function ProjectDetail() {
@@ -28,6 +29,11 @@ export default function ProjectDetail() {
     const getTaskDetail = (id) => {
         let action = getTaskDetailAction(id)
         dispatch1(action)
+    }
+    
+    const getUserByProject = (proId) => {
+        let action = getUserByProjectAction(proId);
+        dispatch(action);
     }
 
     let generateTypeOfTasks = () => {
@@ -56,6 +62,9 @@ export default function ProjectDetail() {
             return element.lstTaskDeTail.map((task) => {
                 return <div className='taskContainer' data-toggle="modal" data-target="#taskModal" onClick={() => {
                     getTaskDetail(task.taskId);
+                    getUserByProject(task.projectId)
+                    console.log(task, "task")
+
                 }}>
                     <div className='taskContainer_Task' >
                         <h6 className='taskContainer_TaskTitle'>{task.taskName}</h6>
@@ -84,6 +93,7 @@ export default function ProjectDetail() {
         }
     }
 
+    
     return (
         <div className='projectDetail'> {console.log(projectInfo[0])}
             <EditTaskModal getTaskDetail={getTaskDetail}/>

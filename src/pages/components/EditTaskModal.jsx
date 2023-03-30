@@ -4,12 +4,12 @@ import { Collapse, Radio, Select, Space, Input, Slider, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskService, getPriorityService, getStatusService, getTaskTypeService, getUserByProject } from '../../services/createTaskService';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
-import { updateDesService, updatePrioService, updateStatusService } from '../../services/editTaskService';
+import { updateDesService, updateEstimateService, updatePrioService, updateStatusService } from '../../services/editTaskService';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import { notifiFunction } from '../../ulti/notification';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { UPDATE_DESC, UPDATE_TASKNAME } from '../../ulti/constants';
+import { UPDATE_ASSIGNEE, UPDATE_DESC, UPDATE_ESTIMATE, UPDATE_TASKNAME } from '../../ulti/constants';
 import {
   CheckOutlined,
   CloseOutlined
@@ -68,8 +68,8 @@ export default function EditTaskModal(props) {
     dispatch(action)
 
   }
-  let {getTaskDetail} = props
-  
+  let { getTaskDetail } = props
+
   const updateStatus = (task, status, idPro) => {
     let stt = updateStatusService(task, status);
     stt.then((res) => {
@@ -90,28 +90,50 @@ export default function EditTaskModal(props) {
     stt.catch((err) => {
       console.log(err)
       //getTaskDetail(task);
-      notifiFunction("error",`${err.response.data.content}`)
+      notifiFunction("error", `${err.response.data.content}`)
     })
   }
   let userList = useSelector(state => state.taskReducer.userList)
-
   let taskDetail = useSelector(state => state.taskReducer.taskDetail)
-  let assList = taskDetail.assigness.map((ass) => {
-    return {label: ass.name, value: ass.id}
+  let [assList, setAssList] = useState([])
+  assList = taskDetail.assigness.map((ass) => {
+    return ass.id
   })
+
+  const handleChange = (value) => {
+    setAssList(value)
+  }
   let [kt, setkt] = useState(false);
   let [ktDes, setktDes] = useState(false);
+  let [ktEst, setktEst] = useState(false);
 
-  const updateDescription = (taskId, desc, proId) => {
+  const updateDescription = (taskId, desc) => {
     let description = updateDesService(taskId, desc);
     description.then((res) => {
       console.log(res)
-      getTaskDetail(proId)
+      getTaskDetail(taskId)
     })
     description.catch((err) => {
       console.log(err)
       notifiFunction("error", err.response.data.content)
     })
+  }
+
+  const updateEstimate = async (taskId, est) => {
+    console.log(est)
+    if (est !== 0) {
+      try {
+        let  result = await updateEstimateService(taskId,est);
+        console.log(result);
+        getTaskDetail(taskId);
+      } catch (err){
+        console.log(err)
+        notifiFunction("error", err.response.data.content)
+      }
+      
+     
+        
+    }
   }
   let desUpdate = useSelector(state => state.taskReducer.desc)
   return (
@@ -123,7 +145,7 @@ export default function EditTaskModal(props) {
             <div className="modal-content">
 
               <div className='container mt-3'>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => {setkt(false); setktDes(false)}}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => { setkt(false); setktDes(false); setktEst(false) }}>
                   <span aria-hidden="true">×</span>
                 </button>
                 <select className='form-control w-25' name>
@@ -146,11 +168,11 @@ export default function EditTaskModal(props) {
                   <div className="col-7">
                     <div className="form-group">
                       <label htmlFor></label>
-                      
-                      
+
+
                       {kt ? <div><input type="text" className="form-control" value={taskDetail.taskName} name='taskName' onChange={
                         (e) => {
-                          
+
                           let action = {
                             type: UPDATE_TASKNAME,
                             data: e.target.value,
@@ -158,26 +180,26 @@ export default function EditTaskModal(props) {
                           console.log(e.target.value)
                           dispatch(action);
                         }
-                      
+
                       } /><button className='btn btn-success'><CheckOutlined /></button>
-                        <button className='btn btn-danger' onClick={() => {setkt(false); getTaskDetail(taskDetail.taskId)}}><CloseOutlined /></button></div> : <h5 style={{fontWeight:'700'}} onClick={() => {setkt(true)}}>{taskDetail.taskName} </h5> }
+                        <button className='btn btn-danger' onClick={() => { setkt(false); getTaskDetail(taskDetail.taskId) }}><CloseOutlined /></button></div> : <h5 style={{ fontWeight: '700' }} onClick={() => { setkt(true) }}>{taskDetail.taskName} </h5>}
                     </div>
                     <div className="form-group">
                       <label htmlFor>Description</label>
-                      {ktDes ?  <div>
-                          <JoditEditor value={taskDetail.description} onChange={(value) => {
-                              let action = {
-                                type: UPDATE_DESC,
-                                data: value
-                              }
-                              dispatch(action)
-                          }}/>
-                          <button className='btn btn-success mr-2' onClick={() => {
-                            updateDescription(taskDetail.taskId, desUpdate,taskDetail.projectId);
-                          }}>Save</button>
-                          <button className='btn btn-danger' onClick={() => {setktDes(false)}}>Cancel</button>
-                        </div> 
-                        : <p onClick={() => {setktDes(true)}}>{taskDetail.description}</p>}
+                      {ktDes ? <div>
+                        <JoditEditor value={taskDetail.description} onChange={(value) => {
+                          let action = {
+                            type: UPDATE_DESC,
+                            data: value
+                          }
+                          dispatch(action)
+                        }} />
+                        <button className='btn btn-success mr-2' onClick={() => {
+                          updateDescription(taskDetail.taskId, desUpdate, taskDetail.projectId);
+                        }}>Save</button>
+                        <button className='btn btn-danger' onClick={() => { setktDes(false) }}>Cancel</button>
+                      </div>
+                        : <p onClick={() => { setktDes(true) }}>{taskDetail.description}</p>}
                     </div>
                     <div className="form-group">
                       <label htmlFor>Comment</label>
@@ -219,6 +241,7 @@ export default function EditTaskModal(props) {
                           <div className="col-8">
                             <Select
                               mode="multiple"
+                              value={assList}
                               placeholder="Choose Assignee"
                               style={{
                                 width: '100%',
@@ -227,14 +250,11 @@ export default function EditTaskModal(props) {
                                 userList.map((ass) => {
                                   return { value: ass.userId, label: ass.name }
                                 })
-
                               }
-                              value={assList}
                               onChange={
-                                (value) => {
-                                  console.log(value)
-                                }
+                                (value) => { console.log(value) }
                               }
+
                             />
                           </div>
                         </div>
@@ -244,7 +264,7 @@ export default function EditTaskModal(props) {
                           </div>
                           <div className="col-8">
                             <select className='form-control' name onChange={(event) => {
-                             
+
                               updatePrio(taskDetail.taskId, event.target.value, taskDetail.projectId)
                             }}>
                               {
@@ -266,7 +286,29 @@ export default function EditTaskModal(props) {
                             <p className='font-weight-300'>Estimate</p>
                           </div>
                           <div className="col-8">
-                            <Input placeholder="" value={taskDetail.timeTrackingRemaining + taskDetail.timeTrackingSpent} />
+                            {ktEst ?
+                              <div>
+                                <Input type='number' value={taskDetail.originalEstimate} onChange = {(e) => {
+                                  console.log(taskDetail.originalEstimate,"onchange")
+                                  dispatch({
+                                    type: UPDATE_ESTIMATE,
+                                    data: e.target.value
+                                  })
+                                }}/>
+                                <button className='btn btn-success mr-1' onClick={() => {
+                                  console.log(taskDetail.originalEstimate, "originalEstimate")
+                                  updateEstimate(taskDetail.taskId, taskDetail.originalEstimate)
+                                }}><CheckOutlined/></button>
+                                <button className='btn btn-danger' onClick={() => {
+                                  setktEst(false);
+                                  getTaskDetail(taskDetail.taskId)
+                                }}><CloseOutlined/></button>
+                              </div>
+                              : <p style={{fontWeight: '700'}} onClick={() => {
+                                setktEst(true)
+                              }}>{taskDetail.originalEstimate}h</p>
+                            }
+
                           </div>
                         </div>
                         <div className="row">
