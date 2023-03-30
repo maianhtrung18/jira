@@ -16,7 +16,7 @@ export const projectReducer = (state = initialState, action) => {
 
         case GET_PROJECT_DETAIL:
             if (action.data) {
-                if (action.data.id === state[0].id || !state[0].id) {
+                if ((action.data.id === state[0].id || !state[0].id) || (action.data.id !== state[0].id) & !action.noRender) {
                     let listTask = action.data.lstTask.map((ele) => {
                         let tasks = ele.lstTaskDeTail.filter((task) => {
                             return task.taskName.toLowerCase().match(state[2].toLowerCase())

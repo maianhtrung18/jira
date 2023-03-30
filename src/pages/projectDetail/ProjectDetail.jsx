@@ -85,7 +85,7 @@ export default function ProjectDetail() {
     }
 
     return (
-        <div className='projectDetail'>
+        <div className='projectDetail'> {console.log(projectInfo[0])}
             <EditTaskModal getTaskDetail={getTaskDetail}/>
             <div className='projectDetail_Container'>
                 <h3 className='projectDetail_Title'>{projectInfo[0].projectName ? projectInfo[0].projectName : ''}</h3>

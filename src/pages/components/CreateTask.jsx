@@ -37,8 +37,8 @@ export default  function CreateTask() {
 
 
     let getProjectDetailInfo = (projectId) => {
-        console.log(projectId)
-        let action = projectDetailAction(projectId)
+        let noRender = true
+        let action = projectDetailAction(projectId, noRender)
         dispatch(action)
     }
 
