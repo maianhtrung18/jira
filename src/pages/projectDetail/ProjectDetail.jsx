@@ -30,6 +30,11 @@ export default function ProjectDetail() {
         let action = getTaskDetailAction(id)
         dispatch1(action)
     }
+    
+    const getUserByProject = (proId) => {
+        let action = getUserByProjectAction(proId);
+        dispatch(action);
+    }
 
     let generateTypeOfTasks = () => {
         if (projectInfo[1]) {
@@ -57,6 +62,7 @@ export default function ProjectDetail() {
             return element.lstTaskDeTail.map((task) => {
                 return <div className='taskContainer' data-toggle="modal" data-target="#taskModal" onClick={() => {
                     getTaskDetail(task.taskId);
+                    getUserByProject(task.projectId)
                     console.log(task, "task")
 
                 }}>
@@ -87,6 +93,7 @@ export default function ProjectDetail() {
         }
     }
 
+    
     return (
         <div className='projectDetail'>
             <EditTaskModal getTaskDetail={getTaskDetail}/>

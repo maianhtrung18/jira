@@ -9,6 +9,7 @@ import { DeleteUser } from '../../services/UserService';
 import FormEditUser from './EditUser';
 import { TOKEN } from '../../ulti/setting';
 import { SearchOutlined } from '@ant-design/icons';
+import { notifiFunction } from '../../ulti/notification';
 
 export default function User() {
   let [userList, setUserList] = useState([]);
@@ -167,7 +168,8 @@ export default function User() {
               getUserList();
             })
             deleteUser.catch((err) => {
-              console.log(err);
+              //console.log(err);
+              notifiFunction("error", err.response.data.content)
             })
           }}><DeleteOutlined /></button>
         </Space>

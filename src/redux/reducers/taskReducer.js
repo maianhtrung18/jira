@@ -1,4 +1,4 @@
-import { GET_TASK_DETAIL, GET_USER_BYPROJECT, UPDATE_DESC, UPDATE_TASKNAME } from "../../ulti/constants"
+import { GET_TASK_DETAIL, GET_USER_BYPROJECT, UPDATE_ASSIGNEE, UPDATE_DESC, UPDATE_ESTIMATE, UPDATE_TASKNAME } from "../../ulti/constants"
 
 const initialState = {
     taskDetail: {
@@ -41,7 +41,8 @@ const initialState = {
             "phoneNumber":""
           },
     ],
-    desc: ""
+    desc: "",
+    listAssign: [],
 }
 
 
@@ -60,6 +61,11 @@ export const taskReducer = (state = initialState, action) => {
             return {...state}
         case UPDATE_DESC:
             state.desc = action.data
+            return {...state}
+        case UPDATE_ESTIMATE:
+            state.taskDetail.originalEstimate = action.data
+            console.log(action.data)
+            state.taskDetail = {...state.taskDetail}
             return {...state}
         default:
             return state
