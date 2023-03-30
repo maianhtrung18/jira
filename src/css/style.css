@@ -101,6 +101,7 @@
 
 .boardContainer {
   height: inherit;
+  padding-top: 20px;
 }
 
 .taskBoard {

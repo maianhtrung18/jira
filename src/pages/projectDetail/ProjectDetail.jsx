@@ -33,7 +33,7 @@ export default function ProjectDetail() {
     let generateTypeOfTasks = () => {
         if (projectInfo[1]) {
             return projectInfo[1].map((element) => {
-                return <div className='col-3 boardContainer'>
+                return <div className='col-12 col-md-6 col-xl-3 boardContainer'>
                     <div className='taskBoard'>
                         <h6 className='taskBoard_Title'>{element.statusName}</h6>
                         {
