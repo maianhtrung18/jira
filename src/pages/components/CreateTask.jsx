@@ -10,6 +10,8 @@ import { createTaskService, getPriorityService, getStatusService, getTaskTypeSer
 import { getAllProject } from '../../services/services';
 import * as Yup from 'yup';
 import { notifiFunction } from '../../ulti/notification';
+import { projectDetailAction } from '../../redux/action/projectDetailAction';
+import { useParams } from 'react-router-dom';
 
 
 export default  function CreateTask() {
@@ -33,6 +35,13 @@ export default  function CreateTask() {
         dispatch({ type: CLOSE_DRAWER });
     };
 
+
+    let getProjectDetailInfo = (projectId) => {
+        console.log(projectId)
+        let action = projectDetailAction(projectId)
+        dispatch(action)
+    }
+
     //const [projectList, setProjectList] = useState([]);
     const formik = useFormik({
         initialValues: {
@@ -54,10 +63,13 @@ export default  function CreateTask() {
         }),
         onSubmit: values => {
             //alert(JSON.stringify(values, null, 2));
+           
+
             let promise = createTaskService(values);
             promise.then((res) => {
                 console.log(res,"create task")
                 notifiFunction('success',"Create task successful !")
+                getProjectDetailInfo(values.projectId)
             })
             promise.catch((err) => {
                 console.log(err, "err task");
@@ -291,8 +303,6 @@ export default  function CreateTask() {
                     </div>
                         {/* <button onClick={() => openNotificationWithIcon('success')}></button> */}
                 </form>
-
-
             </Drawer >
         </>
     )

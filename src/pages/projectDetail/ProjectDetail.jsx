@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import EditTaskModal from '../components/EditTaskModal';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
-import { getUserByProjectAction } from '../../redux/action/userAction';
 const { Search } = Input;
 
 export default function ProjectDetail() {
@@ -57,8 +56,6 @@ export default function ProjectDetail() {
             return element.lstTaskDeTail.map((task) => {
                 return <div className='taskContainer' data-toggle="modal" data-target="#taskModal" onClick={() => {
                     getTaskDetail(task.taskId);
-                    console.log(task, "task")
-
                 }}>
                     <div className='taskContainer_Task' >
                         <h6 className='taskContainer_TaskTitle'>{task.taskName}</h6>
@@ -110,7 +107,6 @@ export default function ProjectDetail() {
                             }}
                         />
                     </Space>
-                    {console.log(projectInfo)}
                     <div className='projectDetail_SearchBarAva'>
                         {generateAva(projectInfo[0].members)}
                     </div>
