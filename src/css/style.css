@@ -23,6 +23,12 @@
   text-align: center;
 }
 
+.formButtonLogin {
+  width: 107px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 /* project managerment */
 .projectManager_Container {
   padding: 30px;

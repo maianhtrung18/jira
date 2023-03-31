@@ -1,8 +1,6 @@
 import { getProjectDetail } from "../../services/services"
 import { GET_PROJECT_DETAIL, TOKEN } from "../../ulti/setting"
 
-
-
 export const projectDetailAction = (projectId, noRender = false) => {
     return (dispatch2) => {
         let token = localStorage.getItem(TOKEN)

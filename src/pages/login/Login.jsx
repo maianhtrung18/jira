@@ -6,7 +6,6 @@ import { signIn } from '../../services/services';
 import { loginAction } from '../../redux/action/loginAction';
 import { useDispatch } from 'react-redux';
 
-
 export default function Login() {
     let dispatch = useDispatch()
 const formik = useFormik({
@@ -52,8 +51,10 @@ const formik = useFormik({
                         ) : null}
                     </div>
             
-
-                    <button type="submit" className="btn btn-primary">Đăng Nhập</button>
+                    <button type="submit" className="btn btn-primary formButtonLogin">Đăng Nhập</button>
+                    <button type="button" onClick={() => {
+                        history.push('/register')
+                    }} className="btn btn-primary formButtonLogin">Đăng Ký</button>
                 </form>
 
             </div>
