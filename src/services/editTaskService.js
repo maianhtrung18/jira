@@ -72,3 +72,56 @@ export const updateEstimateService = (task, hour) => {
         }
     })
 }
+
+export const updateTimeTrackingService = (idTask, timeSpent, timeRemain) => {
+    return axios({
+        method:'PUT',
+        url: `${URL_API}/Project/updateTimeTracking`,
+        data: {
+            "taskId": idTask,
+            "timeTrackingSpent": timeSpent,
+            "timeTrackingRemaining": timeRemain
+        },
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem(TOKEN)}`,
+            'TokenCybersoft': TOKEN_CYBER
+        }
+    })
+}
+
+export const insertCommentService = (idTask, content) => {
+    return axios({
+        method: 'POST',
+        url: `${URL_API}/Comment/insertComment`,
+        data: {
+            "taskId": idTask,
+            "contentComment": content   
+        },
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem(TOKEN)}`,
+            'TokenCybersoft': TOKEN_CYBER
+        }
+    })
+}
+
+export const updateCommentService = (idCom, content) => {
+    return axios({
+        method: 'PUT',
+        url: `${URL_API}/Comment/updateComment?id=${idCom}&contentComment=${content}`,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem(TOKEN)}`,
+            'TokenCybersoft': TOKEN_CYBER
+        }
+    })
+}
+
+export const deleteCommentService = (idCom) => {
+    return axios({
+        method: 'DELETE',
+        url: `${URL_API}/Comment/deleteComment?idComment=${idCom}`,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem(TOKEN)}`,
+            'TokenCybersoft': TOKEN_CYBER
+        }
+    })
+}

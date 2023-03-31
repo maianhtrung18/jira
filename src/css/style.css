@@ -150,3 +150,22 @@
   width: 30px;
   border-radius: 50%;
 }
+
+.comment {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+
+.comment_button {
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  color: blue;
+}
+
+.hoverButton:hover {
+  text-decoration: underline;
+  opacity: 0.7;
+}
