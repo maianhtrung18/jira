@@ -4,12 +4,12 @@ import { Collapse, Radio, Select, Space, Input, Slider, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskService, getPriorityService, getStatusService, getTaskTypeService, getUserByProject } from '../../services/createTaskService';
 import { getTaskDetailAction } from '../../redux/action/editTaskAction';
-import { updateDesService, updateEstimateService, updatePrioService, updateStatusService } from '../../services/editTaskService';
+import { deleteCommentService, insertCommentService, updateCommentService, updateDesService, updateEstimateService, updatePrioService, updateStatusService, updateTimeTrackingService } from '../../services/editTaskService';
 import { projectDetailAction } from '../../redux/action/projectDetailAction';
 import { notifiFunction } from '../../ulti/notification';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { UPDATE_ASSIGNEE, UPDATE_DESC, UPDATE_ESTIMATE, UPDATE_TASKNAME } from '../../ulti/constants';
+import { UPDATE_ASSIGNEE, UPDATE_COMMENT, UPDATE_DESC, UPDATE_ESTIMATE, UPDATE_TASKNAME, UPDATE_TIMETRACKING } from '../../ulti/constants';
 import {
   CheckOutlined,
   CloseOutlined
@@ -18,6 +18,7 @@ import JoditEditor from 'jodit-react';
 
 export default function EditTaskModal(props) {
   const { Panel } = Collapse;
+  const {TextArea} = Input
   const { Paragraph } = Typography;
   const [editableStr, setEditableStr] = useState('This is an editable text.');
   const options = [];
@@ -118,30 +119,114 @@ export default function EditTaskModal(props) {
       notifiFunction("error", err.response.data.content)
     })
   }
-
-  const updateEstimate = async (taskId, est) => {
+  let desUpdate = useSelector(state => state.taskReducer.desc)
+  
+  const updateEstimate = async (taskId, est, timeSpent) => {
     console.log(est)
     if (est !== 0) {
       try {
-        let  result = await updateEstimateService(taskId,est);
+        let result = await updateEstimateService(taskId, est);
         console.log(result);
+        let result2 = await updateTimeTrackingService(taskId, timeSpent, est-timeSpent )
         getTaskDetail(taskId);
-      } catch (err){
+      } catch (err) {
         console.log(err)
         notifiFunction("error", err.response.data.content)
       }
-      
-     
-        
     }
   }
-  let desUpdate = useSelector(state => state.taskReducer.desc)
+ 
+  const updateTimeTracking = (taskId, timeSpent, timeRemain) => {
+    if (timeSpent !== 0) {
+      let promise = updateTimeTrackingService(taskId, timeSpent, timeRemain);
+      promise.then((res) => {
+        console.log(res)
+        getTaskDetail(taskId)
+      })
+      promise.catch((err) => {
+        console.log(err)
+        notifiFunction("error", err.response.data.content)
+      })
+    } 
+  }
+  let [ktTime, setktTime] = useState(false)
+
+  let [ktCom, setktCom] = useState(0)
+  const renderComment = () => {
+    return taskDetail.lstComment.map((com, index) => {
+      return <div className='d-flex mt-3' key={index}>
+        <img src={com.avatar} className='comment' alt="avatar" />
+        <div className='w-100'>
+          <h6 className='font-weight-bold' style={{ marginBottom: '2px', fontSize: '14px' }}>{com.name}</h6>
+          {(ktCom == com.id) ? <div className='d-flex'>
+              <TextArea value={com.commentContent} onChange={(e) => {
+                dispatch({
+                  type: UPDATE_COMMENT,
+                  data: {
+                    value: e.target.value,
+                    idCom: com.id
+                  }
+                })
+              }}/> 
+              <button className='btn btn-light mr-2' onClick={() => {setktCom(0); getTaskDetail(taskDetail.taskId)}}><CloseOutlined/></button>
+              <button className='btn btn-light' onClick={() => {
+                updateComment(com.id, com.commentContent, taskDetail.taskId)
+                setktCom(0)
+              }}><CheckOutlined/></button>
+            
+            </div> : 
+            <p style={{ marginBottom: '2px' }}>{com.commentContent}</p>
+          }
+          
+          <div className='comment_button mt-4'>
+              <span className='mr-2 hoverButton' onClick={() => {setktCom(com.id)}} >Edit</span>
+              <span className='hoverButton' onClick={() => {deleteComment(com.id, taskDetail.taskId)}}>Delete</span>
+            
+          </div>
+
+        </div>
+      </div>
+    })
+  }
+
+  const insertComment = (idTask, comment) => {
+    let promise = insertCommentService(idTask, comment)
+    promise.then((res) => {
+      console.log(res)
+      getTaskDetail(idTask)
+    })
+    promise.catch((err) => {
+      notifiFunction("error",err.response.data.content)
+    })
+  }
+
+  const deleteComment = (idCom,idTask) => {
+    let promise = deleteCommentService(idCom)
+    promise.then((res) => {
+      console.log(res)
+      getTaskDetail(idTask)
+    })
+    promise.catch((err) => {
+      notifiFunction("error", err.response.data.content)
+    })
+  }
+
+  const updateComment = (idCom, content, taskId) => {
+    let promise = updateCommentService(idCom, content);
+    promise.then((res) => {
+      getTaskDetail(taskId)
+    })
+    promise.catch((err) => {
+      notifiFunction("error", err.response.data.content)
+    })
+  }
+
   return (
     <div>
 
       <div>
         <div className="modal fade" id="taskModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ height: 'auto' }}>
-          <div className="modal-dialog modal-xl">
+          <div className="modal-dialog modal-xl modal-dialog-scrollable"> 
             <div className="modal-content">
 
               <div className='container mt-3'>
@@ -164,12 +249,10 @@ export default function EditTaskModal(props) {
 
               <div className="modal-body">
 
-                <div className="row">
+                <div className="row ">
                   <div className="col-7">
                     <div className="form-group">
                       <label htmlFor></label>
-
-
                       {kt ? <div><input type="text" className="form-control" value={taskDetail.taskName} name='taskName' onChange={
                         (e) => {
 
@@ -181,11 +264,11 @@ export default function EditTaskModal(props) {
                           dispatch(action);
                         }
 
-                      } /><button className='btn btn-success'><CheckOutlined /></button>
-                        <button className='btn btn-danger' onClick={() => { setkt(false); getTaskDetail(taskDetail.taskId) }}><CloseOutlined /></button></div> : <h5 style={{ fontWeight: '700' }} onClick={() => { setkt(true) }}>{taskDetail.taskName} </h5>}
+                      } /><button className='btn btn-light'><CheckOutlined /></button>
+                        <button className='btn btn-light' onClick={() => { setkt(false); getTaskDetail(taskDetail.taskId) }}><CloseOutlined /></button></div> : <h5 style={{ fontWeight: '700' }} onClick={() => { setkt(true) }}>{taskDetail.taskName} </h5>}
                     </div>
                     <div className="form-group">
-                      <label htmlFor>Description</label>
+                      <label style={{fontWeight:'600'}} htmlFor>Description</label>
                       {ktDes ? <div>
                         <JoditEditor value={taskDetail.description} onChange={(value) => {
                           let action = {
@@ -199,14 +282,18 @@ export default function EditTaskModal(props) {
                         }}>Save</button>
                         <button className='btn btn-danger' onClick={() => { setktDes(false) }}>Cancel</button>
                       </div>
-                        : <p onClick={() => { setktDes(true) }}>{taskDetail.description}</p>}
+                        : <p onClick={() => { setktDes(true) }}>{taskDetail.description.slice(3, taskDetail.description.length - 4)}</p>}
                     </div>
                     <div className="form-group">
-                      <label htmlFor>Comment</label>
+                      <label style={{fontWeight:'600'}} htmlFor>Comment</label>
                       <div className='d-flex'>
-                        <img src="https://ui-avatars.com/api/?name=Thanh Quang Tran" alt="1" />
-                        <input type="text" className="form-control" name placeholder='Add comment...' />
+                        <img src="https://ui-avatars.com/api/?name=Thanh Quang Tran" className='comment' alt="1" />
+                        <Input type="text" className="form-control" name placeholder='Add comment...' onPressEnter={(e) => {
+                          console.log(e.target.value)
+                          insertComment(taskDetail.taskId, e.target.value)
+                        }} />
                       </div>
+                      {renderComment()}
 
                     </div>
 
@@ -288,23 +375,24 @@ export default function EditTaskModal(props) {
                           <div className="col-8">
                             {ktEst ?
                               <div>
-                                <Input type='number' value={taskDetail.originalEstimate} onChange = {(e) => {
-                                  console.log(taskDetail.originalEstimate,"onchange")
+                                <Input type='number' value={taskDetail.originalEstimate} onChange={(e) => {
+                                  console.log(taskDetail.originalEstimate, "onchange")
                                   dispatch({
                                     type: UPDATE_ESTIMATE,
                                     data: e.target.value
                                   })
-                                }}/>
-                                <button className='btn btn-success mr-1' onClick={() => {
+                                }} />
+                                <button className='btn btn-light mr-1' onClick={() => {
                                   console.log(taskDetail.originalEstimate, "originalEstimate")
-                                  updateEstimate(taskDetail.taskId, taskDetail.originalEstimate)
-                                }}><CheckOutlined/></button>
-                                <button className='btn btn-danger' onClick={() => {
+                                  updateEstimate(taskDetail.taskId, taskDetail.originalEstimate, taskDetail.timeTrackingSpent)
+                                  setktEst(false);
+                                }}><CheckOutlined /></button>
+                                <button className='btn btn-light' onClick={() => {
                                   setktEst(false);
                                   getTaskDetail(taskDetail.taskId)
-                                }}><CloseOutlined/></button>
+                                }}><CloseOutlined /></button>
                               </div>
-                              : <p style={{fontWeight: '700'}} onClick={() => {
+                              : <p style={{ fontWeight: '700' }} onClick={() => {
                                 setktEst(true)
                               }}>{taskDetail.originalEstimate}h</p>
                             }
@@ -316,7 +404,25 @@ export default function EditTaskModal(props) {
                             <p className='font-weight-300'>Time Spent</p>
                           </div>
                           <div className="col-8">
-                            <Input placeholder="" value={taskDetail.timeTrackingSpent} />
+                            {ktTime ? <div>
+                              <Input type='number' value={taskDetail.timeTrackingSpent} onChange={(e) => {
+                              dispatch({
+                                type: UPDATE_TIMETRACKING,
+                                data: e.target.value
+                              })
+                            }} /> 
+                              <button className='btn btn-light mr-2' onClick={() => {
+                                updateTimeTracking(taskDetail.taskId, taskDetail.timeTrackingSpent, taskDetail.originalEstimate - taskDetail.timeTrackingSpent)
+                              }}><CheckOutlined /></button>
+                              <button className='btn btn-light' onClick={() => {
+                                setktTime(false);
+                                getTaskDetail(taskDetail.taskId)
+                              }}><CloseOutlined /></button>
+                            </div> 
+                            : 
+                              <p className='font-weight-bold' onClick={() => {setktTime(true)}}>{taskDetail.timeTrackingSpent}h</p>                           
+                            }
+                            
                           </div>
                         </div>
                         <div className="row">
@@ -324,7 +430,7 @@ export default function EditTaskModal(props) {
                             <p className='font-weight-300'>Time Tracking</p>
                           </div>
                           <div className="col-8">
-                            <Slider max={taskDetail.timeTrackingRemaining + taskDetail.timeTrackingSpent}
+                            <Slider max={taskDetail.originalEstimate}
                               value={taskDetail.timeTrackingSpent} />
                             <div className='d-flex justify-content-between'>
                               <p style={{ fontWeight: '600' }}> {taskDetail.timeTrackingSpent}(h) spent</p>
