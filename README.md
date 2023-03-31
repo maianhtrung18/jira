@@ -71,3 +71,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 Source: https://github.com/maianhtrung18/jira
 Deploy: https://jira-lovat.vercel.app/
+Youtube: https://www.youtube.com/watch?v=P6IW8Cy9W3o&ab_channel=MaiAnh
